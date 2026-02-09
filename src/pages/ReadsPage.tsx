@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Search, ExternalLink } from 'lucide-react';
+import { Search, ExternalLink, ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const ReadsPage = () => {
   const [activeTab, setActiveTab] = useState<'all' | 'logs' | 'signals'>('all');
@@ -8,22 +9,24 @@ const ReadsPage = () => {
 
   const writtenPosts = [
     {
-      id: 'log_001',
-      date: '2026-02-08',
-      title: 'Automating the Unautomatable: Shopify Flow Quirks',
-      desc: 'Deep dive into edge cases when handling high-volume webhooks. How to handle idempotency keys and race conditions in a serverless environment.',
-      tags: ['Shopify', 'Automation', 'Serverless'],
+      id: 'log_004',
+      date: '2024-02-10',
+      title: 'The Invisible Engine: Architecture Deep Dive',
+      desc: 'Dual-repo CI/CD pipelines, sticky parallax, and React state machines. A technical breakdown of this portfolio.',
+      tags: ['Architecture', 'React', 'DevOps'],
       type: 'log',
-      readTime: '8 min read'
+      readTime: '12 min read',
+      url: '/architecture'
     },
     {
-      id: 'log_002',
-      date: '2026-01-15',
-      title: 'The "R" State Philosophy',
-      desc: 'Why redundant systems are the only systems that matter. A manifesto on building resilient infrastructure that survives cloud outages.',
-      tags: ['Philosophy', 'DevOps', 'Architecture'],
+      id: 'log_005',
+      date: '2025-01-20',
+      title: 'Herbology.com.my Refactor',
+      desc: 'Full-stack Shopify overhaul for a premium clean beauty brand. Custom Liquid theme implementation with integrated subscription logic.',
+      tags: ['Liquid', 'Tailwind', 'Case Study'],
       type: 'log',
-      readTime: '12 min read'
+      readTime: '18 min read',
+      url: '/herbology'
     },
     {
       id: 'log_003',
@@ -32,9 +35,23 @@ const ReadsPage = () => {
       desc: 'Lessons learned moving a $10M GMV store to headless. Performance wins, SEO challenges, and the truth about React Server Components.',
       tags: ['Hydrogen', 'React', 'Case Study'],
       type: 'log',
-      readTime: '15 min read'
+      readTime: '15 min read',
+      url: '/hydrogen'
+    },
+    {
+      id: 'log_001',
+      date: '2026-02-08',
+      title: 'Automating the Mundane: Shopify Flow Quirks',
+      desc: 'Deep dive into edge cases when handling high-volume webhooks. How to handle idempotency keys and race conditions in a serverless environment.',
+      tags: ['Shopify', 'Automation', 'Serverless'],
+      type: 'log',
+      readTime: '8 min read',
+      url: '/automation'
     }
   ];
+
+  // ... (skipping unchanged code)
+
 
   const curatedReads = [
     {
@@ -183,7 +200,14 @@ const ReadsPage = () => {
                   <span key={tag} className="tag">{tag}</span>
                 ))}
               </div>
-              {item.type === 'signal' && <ExternalLink size={16} className="text-muted" />}
+              {item.type === 'signal' ? (
+                <ExternalLink size={16} className="text-muted" />
+              ) : (
+                // @ts-ignore
+                <Link to={item.url} style={{ color: 'var(--accent-primary)', display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.8rem', textDecoration: 'none' }} className="mono">
+                  READ <ArrowRight size={14} />
+                </Link>
+              )}
             </div>
           </motion.div>
         ))}

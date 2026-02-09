@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Zap, Globe, Cpu, Server, Activity } from 'lucide-react'
-import { useOutletContext } from 'react-router-dom'
+import { Zap, Globe, Cpu, Server, Activity, ArrowRight } from 'lucide-react'
+import { useOutletContext, Link } from 'react-router-dom'
 import ArchitectureDiagram from '../components/ArchitectureDiagram'
 
 const SystemPulse = () => {
@@ -140,15 +140,18 @@ const HomePage = () => {
       title: "Shopify at Scale: Hydrogen Migration",
       date: "2024-01-15",
       tldr: "Migrating a $50M/yr brand from Liquid to Headless Hydrogen.",
-      link: "#"
+      link: "/hydrogen"
     },
     {
       title: "Automating the Mundane",
       date: "2023-11-20",
       tldr: "Using AWS Lambda to eliminate 40 hours of manual data entry per week.",
-      link: "#"
+      link: "/automation"
     }
   ]
+
+  // ... (skipping some lines)
+
 
   const curatedSignals = [
     {
@@ -293,10 +296,13 @@ const HomePage = () => {
                   style={{ display: 'grid', gap: '2rem' }}
                 >
                   {engineeringLogs.map((log, i) => (
-                    <div key={i} className="log-item" style={{ paddingBottom: '1.5rem', borderBottom: i !== engineeringLogs.length - 1 ? '1px solid rgba(255,255,255,0.05)' : 'none' }}>
+                    <div key={i} className="log-item" style={{ paddingBottom: '1.5rem', borderBottom: i !== engineeringLogs.length - 1 ? '1px solid rgba(255,255,255,0.05)' : 'none', display: 'flex', flexDirection: 'column' }}>
                       <div className="mono text-muted" style={{ fontSize: '0.7rem', marginBottom: '0.5rem' }}>[{log.date}]</div>
                       <h3 className="brand-font" style={{ fontSize: '1.5rem', marginBottom: '0.8rem', color: 'var(--text-primary)' }}>{log.title}</h3>
                       <p className="text-secondary" style={{ fontSize: '1rem', lineHeight: 1.6, maxWidth: '80%' }}>{log.tldr}</p>
+                      <Link to={log.link} className="mono text-accent" style={{ fontSize: '0.8rem', marginTop: '1rem', display: 'inline-flex', alignItems: 'center', gap: '4px', textDecoration: 'none' }}>
+                        READ_TRANSMISSION <ArrowRight size={14} />
+                      </Link>
                     </div>
                   ))}
                 </motion.div>
