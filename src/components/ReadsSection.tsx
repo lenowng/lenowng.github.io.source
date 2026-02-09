@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { FileText, ArrowUpRight, Tag, Bookmark, Rss } from 'lucide-react';
+import { FileText, ArrowUpRight, Rss } from 'lucide-react';
 
 const ReadsSection: React.FC = () => {
   const writtenPosts = [
