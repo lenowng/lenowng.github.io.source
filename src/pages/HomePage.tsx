@@ -358,39 +358,82 @@ const HomePage = () => {
           <h2 className="section-title text-gradient">Engineered Solutions</h2>
         </div>
 
-        <div className="glass-card project-terminal">
-          <div className="terminal-header" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)', padding: '1rem', background: 'rgba(0,0,0,0.2)' }}>
-            <div className="terminal-controls">
-              <div className="terminal-dot" style={{ background: '#FF5F56' }} />
-              <div className="terminal-dot" style={{ background: '#FFBD2E' }} />
-              <div className="terminal-dot" style={{ background: '#27C93F' }} />
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
+
+          {/* Project 1: Hydrogen */}
+          <div className="glass-card project-terminal">
+            <div className="terminal-header" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)', padding: '1rem', background: 'rgba(0,0,0,0.2)' }}>
+              <div className="terminal-controls">
+                <div className="terminal-dot" style={{ background: '#FF5F56' }} />
+                <div className="terminal-dot" style={{ background: '#FFBD2E' }} />
+                <div className="terminal-dot" style={{ background: '#27C93F' }} />
+              </div>
+              <div className="mono text-muted" style={{ fontSize: '0.75rem' }}>trace_id: hydrogen_migration</div>
             </div>
-            <div className="mono text-muted" style={{ fontSize: '0.75rem' }}>user@nightr:~/projects/shopify-automation</div>
-          </div>
-          <div className="project-content" style={{ padding: '2rem', display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', gap: '2rem' }}>
-            <div>
-              <div className="mono text-accent" style={{ marginBottom: '1rem', fontSize: '0.8rem' }}>CASE_STUDY_01: HYDROGEN_MIGRATION</div>
-              <h3 className="brand-font" style={{ fontSize: '2rem', marginBottom: '1rem', lineHeight: 1.1 }}>Enterprise Scale<br />Commerce</h3>
-              <p className="text-secondary" style={{ marginBottom: '2rem' }}>
+            <div className="project-content" style={{ padding: '2rem' }}>
+              <div className="mono text-accent" style={{ marginBottom: '1rem', fontSize: '0.8rem' }}>CASE_STUDY_01</div>
+              <h3 className="brand-font" style={{ fontSize: '1.8rem', marginBottom: '1rem', lineHeight: 1.1 }}>Enterprise Scale<br />Commerce</h3>
+              <p className="text-secondary" style={{ marginBottom: '2rem', minHeight: '80px' }}>
                 Re-architecting a legacy liquid storefront for a global fashion brand.
                 Complete migration to Hydrogen/Oxygen for sub-second performance.
               </p>
-              <div className="metrics-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
+              <div className="metrics-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                 <div>
-                  <div className="text-accent brand-font" style={{ fontSize: '2.5rem' }}>+48%</div>
-                  <div className="mono text-muted" style={{ fontSize: '0.7rem' }}>CONVERSION_LIFT</div>
+                  <div className="text-accent brand-font" style={{ fontSize: '2rem' }}>+48%</div>
+                  <div className="mono text-muted" style={{ fontSize: '0.6rem' }}>CONVERSION_LIFT</div>
                 </div>
                 <div>
-                  <div className="text-accent brand-font" style={{ fontSize: '2.5rem' }}>-1.2s</div>
-                  <div className="mono text-muted" style={{ fontSize: '0.7rem' }}>LCP_REDUCTION</div>
+                  <div className="text-accent brand-font" style={{ fontSize: '2rem' }}>-1.2s</div>
+                  <div className="mono text-muted" style={{ fontSize: '0.6rem' }}>LCP_REDUCTION</div>
+                </div>
+              </div>
+              <div className="architecture-container glass" style={{ marginTop: '2rem', padding: '1rem', borderRadius: '8px', position: 'relative', overflow: 'hidden', height: '180px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <div className="scanline" style={{ position: 'absolute', inset: 0, mixBlendMode: 'overlay', pointerEvents: 'none', opacity: 0.1 }}></div>
+                <ArchitectureDiagram />
+              </div>
+            </div>
+          </div>
+
+          {/* Project 2: Herbology */}
+          <div className="glass-card project-terminal">
+            <div className="terminal-header" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)', padding: '1rem', background: 'rgba(0,0,0,0.2)' }}>
+              <div className="terminal-controls">
+                <div className="terminal-dot" style={{ background: '#FF5F56' }} />
+                <div className="terminal-dot" style={{ background: '#FFBD2E' }} />
+                <div className="terminal-dot" style={{ background: '#27C93F' }} />
+              </div>
+              <div className="mono text-muted" style={{ fontSize: '0.75rem' }}>trace_id: herbology_build</div>
+            </div>
+            <div className="project-content" style={{ padding: '2rem' }}>
+              <div className="mono text-accent" style={{ marginBottom: '1rem', fontSize: '0.8rem' }}>CASE_STUDY_02</div>
+              <h3 className="brand-font" style={{ fontSize: '1.8rem', marginBottom: '1rem', lineHeight: 1.1 }}>Herbology.com.my<br />Refactor</h3>
+              <p className="text-secondary" style={{ marginBottom: '2rem', minHeight: '80px' }}>
+                Full-stack Shopify overhaul for a premium clean beauty brand. Custom Liquid theme implementation with integrated subscription logic.
+              </p>
+              <div className="metrics-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                <div>
+                  <div className="text-accent brand-font" style={{ fontSize: '2rem' }}>98/100</div>
+                  <div className="mono text-muted" style={{ fontSize: '0.6rem' }}>SEO_SCORE</div>
+                </div>
+                <div>
+                  <div className="text-accent brand-font" style={{ fontSize: '2rem' }}>3.2x</div>
+                  <div className="mono text-muted" style={{ fontSize: '0.6rem' }}>RETENTION_RATE</div>
+                </div>
+              </div>
+              <div className="glass" style={{ marginTop: '2rem', padding: '1.5rem', borderRadius: '8px', height: '180px', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: '1rem' }}>
+                <div className="mono" style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>STACK_TRACE:</div>
+                <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                  {['Liquid', 'Alpine.js', 'Tailwind', 'Recharge API'].map(tag => (
+                    <span key={tag} style={{ fontSize: '0.65rem', padding: '4px 8px', background: 'rgba(255,255,255,0.05)', borderRadius: '4px', border: '1px solid rgba(255,255,255,0.1)' }}>{tag}</span>
+                  ))}
+                </div>
+                <div className="mono text-accent" style={{ fontSize: '0.7rem', marginTop: '0.5rem' }}>
+                  {'> deploying to production... DONE'}
                 </div>
               </div>
             </div>
-            <div className="architecture-container glass" style={{ padding: '1.5rem', borderRadius: '8px', position: 'relative', overflow: 'hidden', minHeight: '320px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <div className="scanline" style={{ position: 'absolute', inset: 0, mixBlendMode: 'overlay', pointerEvents: 'none', opacity: 0.1 }}></div>
-              <ArchitectureDiagram />
-            </div>
           </div>
+
         </div>
       </section>
     </>
