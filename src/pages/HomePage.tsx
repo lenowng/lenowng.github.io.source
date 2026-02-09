@@ -109,6 +109,7 @@ const Terminal = () => {
 
 const HomePage = () => {
   const { theme } = useOutletContext<{ theme: 'day' | 'night' }>()
+  const [activeTab, setActiveTab] = useState<'logs' | 'signals'>('logs')
 
   const capabilities = [
     {
@@ -125,6 +126,45 @@ const HomePage = () => {
       id: "MODULE_03", name: "Full-Stack Systems", icon: <Zap size={28} />,
       description: "Responsive web applications and digital products. React/Remix interfaces with clean, maintainable architecture.",
       tags: ["React / Remix", "TypeScript", "Tailwind CSS", "UI/UX"]
+    }
+  ]
+
+  const engineeringLogs = [
+    {
+      title: "The Invisible Engine: Architecture Deep Dive",
+      date: "2024-02-10",
+      tldr: "Dual-repo CI/CD pipelines, sticky parallax, and React state machines.",
+      link: "/architecture"
+    },
+    {
+      title: "Shopify at Scale: Hydrogen Migration",
+      date: "2024-01-15",
+      tldr: "Migrating a $50M/yr brand from Liquid to Headless Hydrogen.",
+      link: "#"
+    },
+    {
+      title: "Automating the Mundane",
+      date: "2023-11-20",
+      tldr: "Using AWS Lambda to eliminate 40 hours of manual data entry per week.",
+      link: "#"
+    }
+  ]
+
+  const curatedSignals = [
+    {
+      title: "Designing Data-Intensive Applications",
+      author: "Martin Kleppmann",
+      type: "BOOK"
+    },
+    {
+      title: "The Systems Thinker",
+      author: "Donella Meadows",
+      type: "BOOK"
+    },
+    {
+      title: "Just JavaScript",
+      author: "Dan Abramov",
+      type: "COURSE"
     }
   ]
 
@@ -193,6 +233,93 @@ const HomePage = () => {
             <Terminal />
           </div>
 
+        </div>
+      </section>
+
+      {/* Knowledge / Logs Section */}
+      <section id="knowledge" style={{ padding: '80px 0', position: 'relative', zIndex: 10, background: 'var(--bg-primary)' }}>
+        <div className="section-header" style={{ marginBottom: '3rem' }}>
+          <span className="section-label">TRANSMISSION_LOGS</span>
+          <h2 className="section-title text-gradient">Signal & Noise</h2>
+        </div>
+
+        <div className="glass-card" style={{ padding: '0', overflow: 'hidden', minHeight: '400px' }}>
+          <div className="tabs-header" style={{ display: 'flex', borderBottom: '1px solid rgba(255,255,255,0.05)', background: 'rgba(0,0,0,0.2)' }}>
+            <button
+              onClick={() => setActiveTab('logs')}
+              style={{
+                flex: 1,
+                padding: '1.5rem',
+                background: activeTab === 'logs' ? 'rgba(255,255,255,0.05)' : 'transparent',
+                border: 'none',
+                borderBottom: activeTab === 'logs' ? '2px solid var(--accent-primary)' : 'none',
+                color: activeTab === 'logs' ? 'var(--text-primary)' : 'var(--text-muted)',
+                cursor: 'pointer',
+                textAlign: 'left',
+                transition: 'all 0.3s ease'
+              }}
+              className="mono"
+            >
+              01_ENGINEERING_LOGS
+            </button>
+            <button
+              onClick={() => setActiveTab('signals')}
+              style={{
+                flex: 1,
+                padding: '1.5rem',
+                background: activeTab === 'signals' ? 'rgba(255,255,255,0.05)' : 'transparent',
+                border: 'none',
+                borderBottom: activeTab === 'signals' ? '2px solid var(--accent-primary)' : 'none',
+                color: activeTab === 'signals' ? 'var(--text-primary)' : 'var(--text-muted)',
+                cursor: 'pointer',
+                textAlign: 'left',
+                transition: 'all 0.3s ease'
+              }}
+              className="mono"
+            >
+              02_CURATED_SIGNALS
+            </button>
+          </div>
+
+          <div style={{ padding: '2rem' }}>
+            <AnimatePresence mode="wait">
+              {activeTab === 'logs' ? (
+                <motion.div
+                  key="logs"
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 10 }}
+                  transition={{ duration: 0.3 }}
+                  style={{ display: 'grid', gap: '2rem' }}
+                >
+                  {engineeringLogs.map((log, i) => (
+                    <div key={i} className="log-item" style={{ paddingBottom: '1.5rem', borderBottom: i !== engineeringLogs.length - 1 ? '1px solid rgba(255,255,255,0.05)' : 'none' }}>
+                      <div className="mono text-muted" style={{ fontSize: '0.7rem', marginBottom: '0.5rem' }}>[{log.date}]</div>
+                      <h3 className="brand-font" style={{ fontSize: '1.5rem', marginBottom: '0.8rem', color: 'var(--text-primary)' }}>{log.title}</h3>
+                      <p className="text-secondary" style={{ fontSize: '1rem', lineHeight: 1.6, maxWidth: '80%' }}>{log.tldr}</p>
+                    </div>
+                  ))}
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="signals"
+                  initial={{ opacity: 0, x: 10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -10 }}
+                  transition={{ duration: 0.3 }}
+                  style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem' }}
+                >
+                  {curatedSignals.map((signal, i) => (
+                    <div key={i} style={{ padding: '1.5rem', background: 'rgba(255,255,255,0.03)', borderRadius: '4px', border: '1px solid rgba(255,255,255,0.05)' }}>
+                      <div className="mono text-accent" style={{ fontSize: '0.65rem', marginBottom: '1rem', display: 'inline-block', border: '1px solid var(--accent-primary)', padding: '2px 6px', borderRadius: '4px' }}>{signal.type}</div>
+                      <h4 className="brand-font" style={{ fontSize: '1.2rem', marginBottom: '0.5rem', color: 'var(--text-primary)' }}>{signal.title}</h4>
+                      <div className="mono text-muted" style={{ fontSize: '0.8rem' }}>By {signal.author}</div>
+                    </div>
+                  ))}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
         </div>
       </section>
 

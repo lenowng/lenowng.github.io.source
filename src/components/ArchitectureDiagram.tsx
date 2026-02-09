@@ -1,137 +1,114 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { ShoppingCart, Zap, Database } from 'lucide-react';
+import { motion } from 'framer-motion'
+import { GitBranch, Box, Globe, Code, Shield, Activity } from 'lucide-react'
 
-const ArchitectureDiagram: React.FC = () => {
+const ArchitectureDiagram = () => {
+  // Pipeline Steps
+  const steps = [
+    { id: 'source', label: 'SOURCE_CORE', sub: 'Private Repo', icon: <Code size={16} />, color: '#fff' },
+    { id: 'build', label: 'CI_PIPELINE', sub: 'Vite Build', icon: <Box size={16} />, color: '#FFBD2E' },
+    { id: 'deploy', label: 'DEPLOY_KEY', sub: 'SSH Auth', icon: <Shield size={16} />, color: '#FF5F56' },
+    { id: 'dist', label: 'DIST_LAYER', sub: 'Public Repo', icon: <GitBranch size={16} />, color: '#27C93F' },
+    { id: 'edge', label: 'GLOBAL_CDN', sub: 'GitHub Pages', icon: <Globe size={16} />, color: '#00a8ff' }
+  ]
+
   return (
-    <div className="architecture-diagram" style={{
-      position: 'relative',
-      height: '100%',
-      width: '100%',
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'center',
-      gap: '2rem',
-      padding: '1rem'
-    }}>
-      {/* Node 1: Shopify */}
-      <motion.div
-        className="node glass"
-        initial={{ opacity: 0, x: -20 }}
-        whileInView={{ opacity: 1, x: 0 }}
-        transition={{ delay: 0.2 }}
-        style={{
-          padding: '1rem',
-          borderRadius: '8px',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '12px',
-          border: '1px solid var(--accent-primary-dim)',
-          width: 'fit-content'
-        }}
-      >
-        <div style={{ color: 'var(--accent-primary)' }}><ShoppingCart size={20} /></div>
-        <div className="mono" style={{ fontSize: '0.7rem' }}>
-          <div style={{ opacity: 0.5 }}>SOURCE</div>
-          <div>SHOPIFY_WEBHOOK</div>
+    <div style={{ width: '100%', padding: '2rem', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2rem' }}>
+
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '1rem',
+        flexWrap: 'wrap',
+        justifyContent: 'center',
+        width: '100%'
+      }}>
+        {steps.map((step, i) => (
+          <div key={step.id} style={{ display: 'flex', alignItems: 'center' }}>
+
+            {/* Node */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.2 }}
+              style={{
+                background: 'rgba(255,255,255,0.03)',
+                border: `1px solid ${step.color}40`,
+                padding: '1rem',
+                borderRadius: '8px',
+                minWidth: '120px',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                gap: '0.5rem',
+                position: 'relative'
+              }}
+            >
+              <div style={{ color: step.color, marginBottom: '4px' }}>{step.icon}</div>
+              <div className="mono" style={{ fontSize: '0.65rem', color: step.color, fontWeight: 700 }}>{step.label}</div>
+              <div style={{ fontSize: '0.6rem', color: 'var(--text-muted)' }}>{step.sub}</div>
+
+              {/* Ping Animation */}
+              <motion.div
+                animate={{ scale: [1, 1.5, 1], opacity: [0.5, 0, 0.5] }}
+                transition={{ duration: 2, repeat: Infinity, delay: i * 0.5 }}
+                style={{
+                  position: 'absolute',
+                  top: '8px',
+                  right: '8px',
+                  width: '4px',
+                  height: '4px',
+                  borderRadius: '50%',
+                  background: step.color
+                }}
+              />
+            </motion.div>
+
+            {/* Arrow Connector (except last item) */}
+            {i < steps.length - 1 && (
+              <motion.div
+                initial={{ width: 0, opacity: 0 }}
+                whileInView={{ width: '40px', opacity: 1 }}
+                transition={{ delay: (i * 0.2) + 0.1, duration: 0.4 }}
+                style={{
+                  height: '1px',
+                  background: `linear-gradient(90deg, ${step.color}, ${steps[i + 1].color})`,
+                  margin: '0 0.5rem',
+                  position: 'relative',
+                  opacity: 0.5
+                }}
+              >
+                <div style={{ position: 'absolute', right: 0, top: '-3px', width: '0', height: '0', borderTop: '4px solid transparent', borderBottom: '4px solid transparent', borderLeft: `6px solid ${steps[i + 1].color}` }} />
+              </motion.div>
+            )}
+          </div>
+        ))}
+      </div>
+
+      <div style={{
+        borderTop: '1px dashed rgba(255,255,255,0.1)',
+        width: '100%',
+        paddingTop: '1rem',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center'
+      }}>
+        <div style={{ display: 'flex', gap: '2rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <div style={{ width: '8px', height: '8px', background: '#27C93F', borderRadius: '50%' }} />
+            <span className="mono" style={{ fontSize: '0.6rem', color: 'var(--text-muted)' }}>STATUS: ONLINE</span>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <Activity size={10} className="text-muted" />
+            <span className="mono" style={{ fontSize: '0.6rem', color: 'var(--text-muted)' }}>LATENCY: 24ms</span>
+          </div>
         </div>
-      </motion.div>
-
-      {/* Connector 1 */}
-      <div style={{ height: '30px', width: '2px', background: 'linear-gradient(to bottom, var(--accent-primary), transparent)', marginLeft: '25px', opacity: 0.3 }} />
-
-      {/* Node 2: Nightr Runtime */}
-      <motion.div
-        className="node glass"
-        initial={{ opacity: 0, x: -20 }}
-        whileInView={{ opacity: 1, x: 0 }}
-        transition={{ delay: 0.4 }}
-        style={{
-          padding: '1rem',
-          borderRadius: '8px',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '12px',
-          border: '1px solid var(--accent-primary)',
-          boxShadow: 'var(--glow-accent)',
-          width: 'fit-content',
-          background: 'var(--accent-primary-dim)'
-        }}
-      >
-        <div style={{ color: 'var(--accent-primary)' }}><Zap size={20} /></div>
-        <div className="mono" style={{ fontSize: '0.7rem' }}>
-          <div style={{ color: 'var(--accent-primary)' }}>NIGHTR_RUNTIME</div>
-          <div style={{ fontSize: '0.6rem', opacity: 0.8 }}>AWS_LAMBDA // NODE_20.X</div>
+        <div className="mono" style={{ fontSize: '0.6rem', color: 'var(--text-muted)' }}>
+          ARCH_VER_2.4.0
         </div>
-      </motion.div>
+      </div>
 
-      {/* Connector 2 */}
-      <div style={{ height: '30px', width: '2px', background: 'linear-gradient(to bottom, var(--accent-primary), transparent)', marginLeft: '25px', opacity: 0.3 }} />
-
-      {/* Node 3: Database */}
-      <motion.div
-        className="node glass"
-        initial={{ opacity: 0, x: -20 }}
-        whileInView={{ opacity: 1, x: 0 }}
-        transition={{ delay: 0.6 }}
-        style={{
-          padding: '1rem',
-          borderRadius: '8px',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '12px',
-          border: '1px solid rgba(255,255,255,0.1)',
-          width: 'fit-content'
-        }}
-      >
-        <div style={{ color: 'var(--text-muted)' }}><Database size={20} /></div>
-        <div className="mono" style={{ fontSize: '0.7rem' }}>
-          <div style={{ opacity: 0.5 }}>PERSISTENCE</div>
-          <div>POSTGRES_REDUNDANT</div>
-        </div>
-      </motion.div>
-
-      {/* Pulse Line */}
-      <motion.div
-        style={{
-          position: 'absolute',
-          left: '25px',
-          top: '45px',
-          width: '2px',
-          height: '180px',
-          background: 'var(--accent-primary)',
-          zIndex: -1,
-          transformOrigin: 'top'
-        }}
-        initial={{ scaleY: 0 }}
-        whileInView={{ scaleY: 1 }}
-        transition={{ duration: 1.5, ease: "easeInOut" }}
-      />
-
-      {/* Moving Signal */}
-      <motion.div
-        style={{
-          position: 'absolute',
-          left: '23px',
-          width: '6px',
-          height: '20px',
-          background: 'var(--accent-primary)',
-          borderRadius: '10px',
-          boxShadow: '0 0 15px var(--accent-primary)',
-          zIndex: 0
-        }}
-        animate={{
-          top: [45, 225],
-          opacity: [0, 1, 1, 0]
-        }}
-        transition={{
-          duration: 2,
-          repeat: Infinity,
-          ease: "linear"
-        }}
-      />
     </div>
-  );
-};
+  )
+}
 
-export default ArchitectureDiagram;
+export default ArchitectureDiagram
