@@ -265,11 +265,33 @@
   color: var(--text-muted);
 }
 
+/* Sticky Hero Styles */
+.hero-scroll-wrapper {
+  position: sticky;
+  top: 150px;
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 4rem;
+  align-items: flex-start;
+}
+
+.hero-terminal-wrapper {
+  width: 100%;
+}
+
 @media (max-width: 1100px) {
   .hero {
+    height: auto !important;
+    padding-top: 160px;
     grid-template-columns: 1fr;
     gap: 4rem;
-    padding-top: 160px;
+  }
+
+  .hero-scroll-wrapper {
+    position: static;
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
   }
 
   .services-grid {
@@ -287,4 +309,92 @@
   .hero-title {
     font-size: 4rem;
   }
+}
+
+/* Mobile specific styles */
+@media (max-width: 1024px) {
+  .app-container {
+    padding: 0 1.5rem;
+  }
+
+  .header {
+    padding: 0 1.5rem;
+  }
+
+  .nav-links>.nav-link,
+  .nav-links>.divider-vertical,
+  .nav-links>.icon-btn:not(.mobile-menu-btn),
+  .nav-links>.btn-primary {
+    display: none;
+  }
+
+  .nav-links {
+    gap: 0 !important;
+  }
+
+  .mobile-menu-btn {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--accent-primary);
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+  }
+
+  .mobile-menu-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 10px var(--accent-secondary);
+  }
+
+  .hero {
+    padding-top: 140px;
+    grid-template-columns: 1fr;
+    gap: 4rem;
+  }
+
+  .hero-title {
+    font-size: 3.5rem;
+    letter-spacing: -2px;
+  }
+
+  .hero-description {
+    font-size: 1rem;
+    max-width: 100%;
+  }
+
+  .terminal-block {
+    position: relative;
+    top: 0;
+    margin-top: 2rem;
+    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5);
+  }
+
+  /* Reads Page Mobile */
+  .reads-page>div>.glass-card {
+    border-left-width: 4px !important;
+  }
+}
+
+/* Base styles for mobile elements */
+.mobile-menu-btn {
+  display: none;
+}
+
+.mobile-nav-overlay .nav-link {
+  font-size: 1.5rem;
+  font-weight: 700;
+  width: 100%;
+  text-align: left;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 1rem 0;
+  color: var(--text-primary);
+  background: transparent;
+  border-left: none;
+  border-right: none;
+  border-top: none;
 }
