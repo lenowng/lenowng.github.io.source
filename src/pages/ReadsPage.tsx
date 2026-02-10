@@ -16,7 +16,7 @@ const ReadsPage = () => {
       tags: ['Architecture', 'React', 'DevOps'],
       type: 'log',
       readTime: '12 min read',
-      url: '/architecture'
+      url: '/blog/architecture-deep-dive'
     },
     {
       id: 'log_005',
@@ -26,7 +26,7 @@ const ReadsPage = () => {
       tags: ['Liquid', 'Tailwind', 'Case Study'],
       type: 'log',
       readTime: '18 min read',
-      url: '/herbology'
+      url: '/blog/herbology'
     },
     {
       id: 'log_003',
@@ -36,7 +36,7 @@ const ReadsPage = () => {
       tags: ['Hydrogen', 'React', 'Case Study'],
       type: 'log',
       readTime: '15 min read',
-      url: '/hydrogen'
+      url: '/blog/hydrogen-migration'
     },
     {
       id: 'log_001',
@@ -46,7 +46,7 @@ const ReadsPage = () => {
       tags: ['Shopify', 'Automation', 'Serverless'],
       type: 'log',
       readTime: '8 min read',
-      url: '/automation'
+      url: '/blog/automation'
     }
   ];
 

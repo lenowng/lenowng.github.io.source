@@ -69,8 +69,10 @@ const Layout = () => {
   const location = useLocation()
 
   // Auto-Theme Scroll Logic
+  // Auto-Theme Scroll Logic
   useMotionValueEvent(scrollY, "change", (latest) => {
-    if (themeMode === 'auto') {
+    // Only trigger auto-theme logic on the homepage
+    if (themeMode === 'auto' && location.pathname === '/') {
       // Trigger night mode after 150px of scrolling
       const shouldBeNight = latest > 150
       if (shouldBeNight && effectiveTheme !== 'night') setEffectiveTheme('night')

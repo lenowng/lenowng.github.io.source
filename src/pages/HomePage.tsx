@@ -6,8 +6,8 @@ import ArchitectureDiagram from '../components/ArchitectureDiagram'
 
 const SystemPulse = () => {
   return (
-    <div className="system-pulse glass" style={{ padding: '0.5rem 1rem', borderRadius: '99px', display: 'flex', alignItems: 'center', gap: '0.8rem', fontSize: '0.7rem' }}>
-      <div style={{ display: 'flex', alignItems: 'baseline', gap: '4px' }}>
+    <div className="system-pulse glass">
+      <div className="system-status-row">
         <Activity size={14} className="text-accent" />
         <span className="mono text-muted">SYS_LOAD</span>
       </div>
@@ -33,8 +33,8 @@ const Terminal = () => {
   const messages = [
     "system.init() -> SUCCESS",
     "connecting to edge_nodes...",
-    "node_01: TOKYO_NORTH (24ms)",
-    "node_02: LONDON_WEST (88ms)",
+    "node_01: KUALA_LUMPUR (4ms)",
+    "node_02: SINGAPORE (24ms)",
     "integrity_check: 100%",
     "loading modules.shopify",
     "loading modules.automation",
@@ -99,7 +99,9 @@ const Terminal = () => {
         {entries.length === messages.length && (
           <div className="terminal-line">
             <span className="terminal-prompt">&lambda;</span>
-            <span className="animate-pulse" style={{ width: '8px', height: '15px', background: 'var(--accent-primary)' }} />
+            <span style={{ display: 'flex', gap: '2px' }}>
+              <span className="typing-cursor" />
+            </span>
           </div>
         )}
       </div>
@@ -126,6 +128,11 @@ const HomePage = () => {
       id: "MODULE_03", name: "Full-Stack Systems", icon: <Zap size={28} />,
       description: "Responsive web applications and digital products. React/Remix interfaces with clean, maintainable architecture.",
       tags: ["React / Remix", "TypeScript", "Tailwind CSS", "UI/UX"]
+    },
+    {
+      id: "MODULE_04", name: "Integrations", icon: <Zap size={28} />,
+      description: "Connecting disparate systems to create seamless workflows. From POS to ERP, ensuring data flows freely and securely.",
+      tags: ["API", "Webhooks", "Data Sync", "Automation"]
     }
   ]
 
@@ -134,19 +141,19 @@ const HomePage = () => {
       title: "The Invisible Engine: Architecture Deep Dive",
       date: "2024-02-10",
       tldr: "Dual-repo CI/CD pipelines, sticky parallax, and React state machines.",
-      link: "/architecture"
+      link: "/blog/architecture-deep-dive"
     },
     {
       title: "Shopify at Scale: Hydrogen Migration",
       date: "2024-01-15",
       tldr: "Migrating a $50M/yr brand from Liquid to Headless Hydrogen.",
-      link: "/hydrogen"
+      link: "/blog/hydrogen-migration"
     },
     {
       title: "Automating the Mundane",
       date: "2023-11-20",
       tldr: "Using AWS Lambda to eliminate 40 hours of manual data entry per week.",
-      link: "/automation"
+      link: "/blog/automation"
     }
   ]
 
@@ -200,6 +207,22 @@ const HomePage = () => {
               </motion.h1>
             </AnimatePresence>
 
+            <motion.div className="hero-tagline" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }}>
+              <AnimatePresence mode="wait">
+                <motion.span
+                  key={theme}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.5 }}
+                  className="mono text-accent"
+                  style={{ fontSize: '1.1rem', fontWeight: 700 }}
+                >
+                  {theme === 'night' ? "> WE RUN HARDER." : "> WE OPTIMIZE."}
+                </motion.span>
+              </AnimatePresence>
+            </motion.div>
+
             <AnimatePresence mode='wait'>
               <motion.p
                 key={theme}
@@ -214,22 +237,6 @@ const HomePage = () => {
                   : "But your systems shouldn't require manual effort. We automate the mundane so you can continue generating value."}
               </motion.p>
             </AnimatePresence>
-
-            <motion.div style={{ marginTop: '2rem' }} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }}>
-              <AnimatePresence mode="wait">
-                <motion.span
-                  key={theme}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.5 }}
-                  className="mono text-accent"
-                  style={{ fontSize: '1.2rem', fontWeight: 700 }}
-                >
-                  {theme === 'night' ? "> WE RUN HARDER." : "> WE OPTIMIZE."}
-                </motion.span>
-              </AnimatePresence>
-            </motion.div>
           </div>
 
           <div className="hero-terminal-wrapper">
@@ -247,38 +254,16 @@ const HomePage = () => {
         </div>
 
         <div className="glass-card" style={{ padding: '0', overflow: 'hidden', minHeight: '400px' }}>
-          <div className="tabs-header" style={{ display: 'flex', borderBottom: '1px solid rgba(255,255,255,0.05)', background: 'rgba(0,0,0,0.2)' }}>
+          <div className="tabs-header">
             <button
               onClick={() => setActiveTab('logs')}
-              style={{
-                flex: 1,
-                padding: '1.5rem',
-                background: activeTab === 'logs' ? 'rgba(255,255,255,0.05)' : 'transparent',
-                border: 'none',
-                borderBottom: activeTab === 'logs' ? '2px solid var(--accent-primary)' : 'none',
-                color: activeTab === 'logs' ? 'var(--text-primary)' : 'var(--text-muted)',
-                cursor: 'pointer',
-                textAlign: 'left',
-                transition: 'all 0.3s ease'
-              }}
-              className="mono"
+              className={`tab-btn mono ${activeTab === 'logs' ? 'active' : ''}`}
             >
               01_ENGINEERING_LOGS
             </button>
             <button
               onClick={() => setActiveTab('signals')}
-              style={{
-                flex: 1,
-                padding: '1.5rem',
-                background: activeTab === 'signals' ? 'rgba(255,255,255,0.05)' : 'transparent',
-                border: 'none',
-                borderBottom: activeTab === 'signals' ? '2px solid var(--accent-primary)' : 'none',
-                color: activeTab === 'signals' ? 'var(--text-primary)' : 'var(--text-muted)',
-                cursor: 'pointer',
-                textAlign: 'left',
-                transition: 'all 0.3s ease'
-              }}
-              className="mono"
+              className={`tab-btn mono ${activeTab === 'signals' ? 'active' : ''}`}
             >
               02_CURATED_SIGNALS
             </button>
@@ -327,7 +312,7 @@ const HomePage = () => {
             </AnimatePresence>
           </div>
         </div>
-      </section>
+      </section >
 
       <section id="capabilities" style={{ padding: '80px 0', position: 'relative', zIndex: 10, background: 'var(--bg-primary)' }}>
         <div className="section-header">
@@ -412,7 +397,10 @@ const HomePage = () => {
             </div>
             <div className="project-content" style={{ padding: '2rem' }}>
               <div className="mono text-accent" style={{ marginBottom: '1rem', fontSize: '0.8rem' }}>CASE_STUDY_02</div>
-              <h3 className="brand-font" style={{ fontSize: '1.8rem', marginBottom: '1rem', lineHeight: 1.1 }}>Herbology.com.my<br />Refactor</h3>
+              <h3 className="brand-font" style={{ fontSize: '1.8rem', marginBottom: '1rem', lineHeight: 1.1 }}>
+                <a href="https://herbology.com.my" target="_blank" rel="noreferrer" style={{ color: 'inherit', textDecoration: 'underline' }}>Herbology.com.my</a>
+                <br />Refactor
+              </h3>
               <p className="text-secondary" style={{ marginBottom: '2rem', minHeight: '80px' }}>
                 Full-stack Shopify overhaul for a premium clean beauty brand. Custom Liquid theme implementation with integrated subscription logic.
               </p>
