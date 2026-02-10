@@ -58,8 +58,11 @@ const Logo = () => {
 }
 
 const Layout = () => {
-  // Theme State: 'auto' is default
-  const [themeMode, setThemeMode] = useState<'auto' | 'day' | 'night'>('auto')
+  // Theme State: 'auto' is default, persisted in localStorage
+  const [themeMode, setThemeMode] = useState<'auto' | 'day' | 'night'>(() => {
+    const saved = localStorage.getItem('theme-mode') as 'auto' | 'day' | 'night'
+    return saved || 'auto'
+  })
   const [effectiveTheme, setEffectiveTheme] = useState<'day' | 'night'>('day')
   const [currentTime, setCurrentTime] = useState(new Date().toLocaleTimeString())
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -82,6 +85,7 @@ const Layout = () => {
 
   // Sync effectiveTheme when manual mode changes or initially
   useEffect(() => {
+    localStorage.setItem('theme-mode', themeMode)
     if (themeMode !== 'auto') {
       setEffectiveTheme(themeMode)
     } else {
