@@ -37,5 +37,6 @@ jobs:
           external_repository: lenowng/lenowng.github.io
           publish_branch: main
           publish_dir: ./dist
+          cname: nightr.dev
           # We use a deploy key (SSH) for cross-repo pushes
           # Alternatively, you can use personal_token: ${{ secrets.GH_PAT }}
