@@ -1,11 +1,12 @@
-import { useState } from 'react';
-import { motion } from 'framer-motion';
+import { useState, useEffect } from 'react';
 import { Search, ExternalLink, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const ReadsPage = () => {
-  const [activeTab, setActiveTab] = useState<'all' | 'logs' | 'signals'>('all');
+  const [activeTab, setActiveTab] = useState<'all' | 'essays' | 'curation'>('all');
   const [searchQuery, setSearchQuery] = useState('');
+
+
 
   const writtenPosts = [
     {
@@ -14,7 +15,7 @@ const ReadsPage = () => {
       title: 'The Invisible Engine: Architecture Deep Dive',
       desc: 'Dual-repo CI/CD pipelines, sticky parallax, and React state machines. A technical breakdown of this portfolio.',
       tags: ['Architecture', 'React', 'DevOps'],
-      type: 'log',
+      type: 'essay',
       readTime: '12 min read',
       url: '/blog/architecture-deep-dive'
     },
@@ -24,7 +25,7 @@ const ReadsPage = () => {
       title: 'Herbology.com.my Refactor',
       desc: 'Full-stack Shopify overhaul for a premium clean beauty brand. Custom Liquid theme implementation with integrated subscription logic.',
       tags: ['Liquid', 'Tailwind', 'Case Study'],
-      type: 'log',
+      type: 'essay',
       readTime: '18 min read',
       url: '/blog/herbology'
     },
@@ -34,7 +35,7 @@ const ReadsPage = () => {
       title: 'Migrating to Hydrogen: A Survival Guide',
       desc: 'Lessons learned moving a $10M GMV store to headless. Performance wins, SEO challenges, and the truth about React Server Components.',
       tags: ['Hydrogen', 'React', 'Case Study'],
-      type: 'log',
+      type: 'essay',
       readTime: '15 min read',
       url: '/blog/hydrogen-migration'
     },
@@ -44,14 +45,11 @@ const ReadsPage = () => {
       title: 'Automating the Mundane: Shopify Flow Quirks',
       desc: 'Deep dive into edge cases when handling high-volume webhooks. How to handle idempotency keys and race conditions in a serverless environment.',
       tags: ['Shopify', 'Automation', 'Serverless'],
-      type: 'log',
+      type: 'essay',
       readTime: '8 min read',
       url: '/blog/automation'
     }
   ];
-
-  // ... (skipping unchanged code)
-
 
   const curatedReads = [
     {
@@ -62,7 +60,7 @@ const ReadsPage = () => {
       tags: ['DevTools', 'Cloud'],
       relevance: '98%',
       date: '2026-02-09',
-      type: 'signal',
+      type: 'curation',
       url: '#'
     },
     {
@@ -73,7 +71,7 @@ const ReadsPage = () => {
       tags: ['Shopify', 'API'],
       relevance: '95%',
       date: '2026-02-07',
-      type: 'signal',
+      type: 'curation',
       url: '#'
     },
     {
@@ -84,7 +82,7 @@ const ReadsPage = () => {
       tags: ['AI', 'Future'],
       relevance: '88%',
       date: '2026-02-05',
-      type: 'signal',
+      type: 'curation',
       url: '#'
     },
     {
@@ -95,7 +93,7 @@ const ReadsPage = () => {
       tags: ['React', 'News'],
       relevance: '92%',
       date: '2026-02-01',
-      type: 'signal',
+      type: 'curation',
       url: '#'
     }
   ];
@@ -106,8 +104,8 @@ const ReadsPage = () => {
 
   const filteredItems = allItems.filter(item => {
     const matchesTab = activeTab === 'all' ||
-      (activeTab === 'logs' && item.type === 'log') ||
-      (activeTab === 'signals' && item.type === 'signal');
+      (activeTab === 'essays' && item.type === 'essay') ||
+      (activeTab === 'curation' && item.type === 'curation');
 
     const matchesSearch = item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       item.tags.some(t => t.toLowerCase().includes(searchQuery.toLowerCase()));
@@ -115,128 +113,128 @@ const ReadsPage = () => {
     return matchesTab && matchesSearch;
   });
 
+  useEffect(() => {
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0.15
+    }
+
+    const observer = new IntersectionObserver((entries, obs) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible')
+          obs.unobserve(entry.target)
+        }
+      })
+    }, observerOptions)
+
+    // Wait a tick for DOM to update with filtered items before observing
+    setTimeout(() => {
+      document.querySelectorAll('.fade-in-up').forEach(el => {
+        observer.observe(el)
+      })
+    }, 50)
+
+    return () => observer.disconnect()
+  }, [filteredItems])
+
   return (
-    <div className="reads-page">
-      <div className="section-header" style={{ marginBottom: '3rem' }}>
-        <span className="section-label">DATA_ARCHIVE_V1.0</span>
-        <h2 className="section-title text-gradient">Knowledge Base</h2>
+    <div className="w-full px-margin-safe pt-32 pb-element-gap relative min-h-screen">
+      
+      <div className="mb-24 fade-in-up">
+        <h1 className="font-display-lg text-display-lg md:text-[80px] text-primary leading-none tracking-tighter mb-4">
+          THE DIGEST
+        </h1>
+        <p className="font-body-lg text-body-lg text-on-surface-variant max-w-lg">
+          Curated thoughts, technical essays, and industry insights. A hub for architectural exploration.
+        </p>
       </div>
 
       {/* Control Bar */}
-      <div className="glass" style={{ padding: '1rem', borderRadius: '8px', marginBottom: '3rem', display: 'flex', gap: '1rem', alignItems: 'center', flexWrap: 'wrap' }}>
-        <div style={{ display: 'flex', gap: '8px' }}>
+      <div className="flex flex-col md:flex-row gap-8 mb-16 fade-in-up">
+        <div className="flex gap-6 border-b border-outline-variant pb-2 flex-grow">
           <button
             onClick={() => setActiveTab('all')}
-            className={`btn-filter ${activeTab === 'all' ? 'active' : ''}`}
+            className={`font-label-caps text-label-caps pb-2 transition-colors ${activeTab === 'all' ? 'text-primary font-bold border-b-2 border-primary -mb-[3px]' : 'text-on-surface-variant hover:text-primary'}`}
           >
-            ALL_DATA
+            ALL
           </button>
           <button
-            onClick={() => setActiveTab('logs')}
-            className={`btn-filter ${activeTab === 'logs' ? 'active' : ''}`}
+            onClick={() => setActiveTab('essays')}
+            className={`font-label-caps text-label-caps pb-2 transition-colors ${activeTab === 'essays' ? 'text-primary font-bold border-b-2 border-primary -mb-[3px]' : 'text-on-surface-variant hover:text-primary'}`}
           >
-            LOGS (WRITTEN)
+            ESSAYS
           </button>
           <button
-            onClick={() => setActiveTab('signals')}
-            className={`btn-filter ${activeTab === 'signals' ? 'active' : ''}`}
+            onClick={() => setActiveTab('curation')}
+            className={`font-label-caps text-label-caps pb-2 transition-colors ${activeTab === 'curation' ? 'text-primary font-bold border-b-2 border-primary -mb-[3px]' : 'text-on-surface-variant hover:text-primary'}`}
           >
-            SIGNALS (CURATED)
+            CURATION
           </button>
         </div>
 
-        <div style={{ flex: 1, minWidth: '200px', position: 'relative' }}>
-          <Search size={16} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
+        <div className="relative md:w-96">
+          <Search size={16} className="absolute left-0 top-1/2 -translate-y-1/2 text-outline" />
           <input
             type="text"
-            placeholder="SEARCH_DB..."
+            placeholder="Search digest..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            style={{
-              width: '100%',
-              background: 'rgba(0,0,0,0.2)',
-              border: '1px solid rgba(255,255,255,0.1)',
-              borderRadius: '4px',
-              padding: '8px 12px 8px 36px',
-              color: 'var(--text-primary)',
-              fontFamily: 'JetBrains Mono',
-              fontSize: '0.8rem',
-              outline: 'none'
-            }}
+            className="w-full bg-transparent border-b border-outline-variant pb-2 pl-8 font-body-sm text-body-sm text-primary focus:outline-none focus:border-primary transition-colors placeholder:text-outline"
           />
         </div>
       </div>
 
       {/* Content Grid */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))', gap: '2rem' }}>
-        {filteredItems.map((item, i) => (
-          <motion.div
-            key={item.id}
-            className="glass-card"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.05 }}
-            style={{
-              padding: '1.5rem',
-              display: 'flex',
-              flexDirection: 'column',
-              height: '100%',
-              borderLeft: item.type === 'log' ? '2px solid var(--accent-primary)' : '2px solid var(--accent-secondary)'
-            }}
-          >
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem' }}>
-              <span className="mono" style={{ fontSize: '0.65rem', color: 'var(--text-muted)' }}>{item.date}</span>
-              <span className="mono" style={{ fontSize: '0.65rem', color: item.type === 'log' ? 'var(--accent-primary)' : 'var(--accent-secondary)' }}>
-                {item.type === 'log' ? 'TRANSMISSION' : 'SIGNAL'}
-              </span>
-            </div>
-
-            <h3 style={{ fontSize: '1.25rem', marginBottom: '0.8rem', lineHeight: 1.3 }}>{item.title}</h3>
-            <p className="text-secondary" style={{ fontSize: '0.9rem', marginBottom: '1.5rem', flex: 1 }}>{item.desc}</p>
-
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 'auto' }}>
-              <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
-                {item.tags.map(tag => (
-                  <span key={tag} className="tag">{tag}</span>
-                ))}
+      <div className="flex flex-col gap-8 w-full mx-auto fade-in-up">
+        {filteredItems.map((item) => (
+          <div key={item.id} className="bracket-border hover:bg-surface-container-low transition-colors duration-300">
+            <div className="flex flex-col md:flex-row justify-between items-start gap-8">
+              
+              <div className="flex-1">
+                <div className="flex justify-between items-center mb-4">
+                  <div className="font-label-caps text-label-caps text-on-surface-variant">[{item.date}]</div>
+                  <div className="font-label-caps text-label-caps text-primary">
+                    {item.type.toUpperCase()}
+                  </div>
+                </div>
+                
+                <h3 className="font-body-lg text-[24px] text-primary mb-4 font-semibold leading-tight">{item.title}</h3>
+                <p className="font-body-sm text-body-sm text-on-surface-variant max-w-3xl mb-6">{item.desc}</p>
+                
+                <div className="flex gap-4 flex-wrap">
+                  {item.tags.map(tag => (
+                    <span key={tag} className="font-label-caps text-label-caps text-outline border border-outline px-2 py-1">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
               </div>
-              {item.type === 'signal' ? (
-                <ExternalLink size={16} className="text-muted" />
-              ) : (
-                // @ts-ignore
-                <Link to={item.url} style={{ color: 'var(--accent-primary)', display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.8rem', textDecoration: 'none' }} className="mono">
-                  READ <ArrowRight size={14} />
-                </Link>
-              )}
+
+              <div className="flex flex-col justify-end items-end h-full mt-4 md:mt-0">
+                {item.type === 'curation' ? (
+                  <a href={item.url} target="_blank" rel="noreferrer" className="font-label-caps text-label-caps text-primary border-b border-outline pb-1 hover:text-secondary hover:border-secondary transition-colors inline-flex items-center gap-2">
+                    VISIT SOURCE <ExternalLink size={14} />
+                  </a>
+                ) : (
+                  <Link to={item.url as string} className="font-label-caps text-label-caps text-primary border-b border-outline pb-1 hover:text-secondary hover:border-secondary transition-colors inline-flex items-center gap-2">
+                    READ <ArrowRight size={14} />
+                  </Link>
+                )}
+              </div>
+              
             </div>
-          </motion.div>
+          </div>
         ))}
+        
+        {filteredItems.length === 0 && (
+          <div className="py-16 text-center text-on-surface-variant font-body-sm">
+            No entries found matching your query.
+          </div>
+        )}
       </div>
 
-      <style>{`
-        .btn-filter {
-          background: transparent;
-          border: 1px solid rgba(255,255,255,0.1);
-          color: var(--text-muted);
-          padding: 6px 16px;
-          border-radius: 4px;
-          font-family: 'JetBrains Mono', monospace;
-          font-size: 0.7rem;
-          cursor: pointer;
-          transition: all 0.2s;
-        }
-
-        .btn-filter.active {
-          background: rgba(255,255,255,0.05);
-          border-color: var(--accent-primary);
-          color: var(--accent-primary);
-        }
-
-        .btn-filter:hover:not(.active) {
-          border-color: rgba(255,255,255,0.3);
-          color: var(--text-primary);
-        }
-      `}</style>
     </div>
   );
 };

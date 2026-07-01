@@ -1,6 +1,6 @@
 import React from 'react';
 import BlogPostLayout from '../../layouts/BlogPostLayout';
-import ArchitectureDiagram from '../../components/ArchitectureDiagram';
+
 
 const HerbologyPost: React.FC = () => {
   return (
@@ -42,7 +42,7 @@ x-data="{
 
       <div style={{ marginTop: '2rem', padding: '1rem', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.1)', background: 'rgba(0,0,0,0.2)' }}>
         <div className="mono text-muted" style={{ marginBottom: '1rem' }}>SYSTEM_DIAGRAM:</div>
-        <ArchitectureDiagram />
+
       </div>
 
       <p>We proved that even "traditional" Liquid themes can compete with Headless if engineered correctly.</p>

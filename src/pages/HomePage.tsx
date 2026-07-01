@@ -1,140 +1,32 @@
-import { useState, useRef, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { Zap, Globe, Cpu, Server, Activity, ArrowRight } from 'lucide-react'
-import { useOutletContext, Link } from 'react-router-dom'
-import ArchitectureDiagram from '../components/ArchitectureDiagram'
-
-const SystemPulse = () => {
-  return (
-    <div className="system-pulse glass">
-      <div className="system-status-row">
-        <Activity size={14} className="text-accent" />
-        <span className="mono text-muted">SYS_LOAD</span>
-      </div>
-      <div style={{ display: 'flex', gap: '2px', alignItems: 'flex-end', height: '14px' }}>
-        {[40, 70, 30, 80, 50, 90, 20].map((h, i) => (
-          <motion.div
-            key={i}
-            animate={{ height: [`${h}%`, `${Math.random() * 80 + 10}%`] }}
-            transition={{ duration: 0.5, repeat: Infinity, repeatType: "reverse", ease: "easeInOut", delay: i * 0.05 }}
-            style={{ width: '3px', background: i === 5 ? 'var(--accent-primary)' : 'var(--text-muted)', borderRadius: '1px' }}
-          />
-        ))}
-      </div>
-      <span className="mono text-accent">NOMINAL</span>
-    </div>
-  )
-}
-
-const Terminal = () => {
-  const [entries, setEntries] = useState<string[]>([])
-  const bodyRef = useRef<HTMLDivElement>(null)
-
-  const messages = [
-    "system.init() -> SUCCESS",
-    "connecting to edge_nodes...",
-    "node_01: KUALA_LUMPUR (4ms)",
-    "node_02: SINGAPORE (24ms)",
-    "integrity_check: 100%",
-    "loading modules.shopify",
-    "loading modules.automation",
-    "loading modules.aws",
-    "NIGHTR_CORE: READY",
-    "waiting for input..."
-  ]
-
-  useEffect(() => {
-    let i = 0
-    const interval = setInterval(() => {
-      if (i < messages.length) {
-        setEntries(prev => [...prev, messages[i]])
-        i++
-      } else {
-        clearInterval(interval)
-      }
-    }, 900)
-    return () => clearInterval(interval)
-  }, [])
-
-  useEffect(() => {
-    if (bodyRef.current) {
-      bodyRef.current.scrollTop = bodyRef.current.scrollHeight
-    }
-  }, [entries])
-
-  return (
-    <motion.div
-      className="terminal-block scanline glass"
-      initial={{ opacity: 0, x: 40 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ duration: 1, ease: [0.23, 1, 0.32, 1] }}
-    >
-      <div className="terminal-header">
-        <div className="terminal-controls">
-          <div className="terminal-dot" style={{ background: '#FF5F56' }} />
-          <div className="terminal-dot" style={{ background: '#FFBD2E' }} />
-          <div className="terminal-dot" style={{ background: '#27C93F' }} />
-        </div>
-        <div className="mono" style={{ fontSize: '0.6rem', color: 'var(--text-muted)', letterSpacing: '2px' }}>NIGHTR_STATION.TERMINAL</div>
-        <Server size={12} className="text-muted" />
-      </div>
-      <div className="terminal-body" ref={bodyRef}>
-        <div className="terminal-line">
-          <span className="terminal-prompt">&lambda;</span>
-          <span style={{ color: 'var(--text-primary)' }}>./nightr_core --boot --verbose</span>
-        </div>
-        {entries.map((entry, idx) => (
-          <motion.div
-            key={idx}
-            initial={{ opacity: 0, y: 5 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="terminal-line"
-          >
-            <span style={{ color: entry?.includes('SUCCESS') || entry?.includes('READY') ? 'var(--accent-primary)' : 'var(--text-muted)' }}>
-              {entry?.includes('READY') ? '>>' : '>'}
-            </span>
-            <span>{entry}</span>
-          </motion.div>
-        ))}
-        {entries.length === messages.length && (
-          <div className="terminal-line">
-            <span className="terminal-prompt">&lambda;</span>
-            <span style={{ display: 'flex', gap: '2px' }}>
-              <span className="typing-cursor" />
-            </span>
-          </div>
-        )}
-      </div>
-    </motion.div>
-  )
-}
+import { useEffect } from 'react'
+import { ArrowRight } from 'lucide-react'
+import { Link } from 'react-router-dom'
+import ShaderBackground from '../components/ShaderBackground'
 
 const HomePage = () => {
-  const { theme } = useOutletContext<{ theme: 'day' | 'night' }>()
-  const [activeTab, setActiveTab] = useState<'logs' | 'signals'>('logs')
 
-  const capabilities = [
-    {
-      id: "MODULE_01", name: "Commerce Engineering", icon: <Globe size={28} />,
-      description: "Custom Shopify App development and POS UI/UX extensions. Automated order workflows and specialized admin tools.",
-      tags: ["Shopify Apps", "POS UI", "Liquid", "Admin Extensions"]
-    },
-    {
-      id: "MODULE_02", name: "Serverless Architecture", icon: <Cpu size={28} />,
-      description: "Scalable backend systems built on AWS. Lambda functions, API Gateway, and DynamoDB for high-performance automation.",
-      tags: ["AWS Lambda", "DynamoDB", "Serverless", "Node.js"]
-    },
-    {
-      id: "MODULE_03", name: "Full-Stack Systems", icon: <Zap size={28} />,
-      description: "Responsive web applications and digital products. React/Remix interfaces with clean, maintainable architecture.",
-      tags: ["React / Remix", "TypeScript", "Tailwind CSS", "UI/UX"]
-    },
-    {
-      id: "MODULE_04", name: "Integrations", icon: <Zap size={28} />,
-      description: "Connecting disparate systems to create seamless workflows. From POS to ERP, ensuring data flows freely and securely.",
-      tags: ["API", "Webhooks", "Data Sync", "Automation"]
+  useEffect(() => {
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0.15
     }
-  ]
+
+    const observer = new IntersectionObserver((entries, obs) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible')
+          obs.unobserve(entry.target)
+        }
+      })
+    }, observerOptions)
+
+    document.querySelectorAll('.fade-in-up').forEach(el => {
+      observer.observe(el)
+    })
+
+    return () => observer.disconnect()
+  }, [])
 
   const engineeringLogs = [
     {
@@ -157,279 +49,156 @@ const HomePage = () => {
     }
   ]
 
-  // ... (skipping some lines)
-
-
-  const curatedSignals = [
-    {
-      title: "Designing Data-Intensive Applications",
-      author: "Martin Kleppmann",
-      type: "BOOK"
-    },
-    {
-      title: "The Systems Thinker",
-      author: "Donella Meadows",
-      type: "BOOK"
-    },
-    {
-      title: "Just JavaScript",
-      author: "Dan Abramov",
-      type: "COURSE"
-    }
-  ]
-
   return (
     <>
-      {/* Sticky Hero Section */}
-      <section className="hero">
-        <div className="hero-scroll-wrapper">
-
-          <div className="hero-content">
-            <motion.div className="hero-meta" initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}>
-              <SystemPulse />
-            </motion.div>
-
-            {/* Dynamic Hero based on Scroll/Theme state */}
-            <AnimatePresence mode='wait'>
-              <motion.h1
-                key={theme}
-                className="hero-title text-gradient"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.8, ease: "easeInOut" }}
-              >
-                {theme === 'night' ? (
-                  <>The Invisible<br />Engine.</>
-                ) : (
-                  <>You Work<br />Hard.</>
-                )}
-              </motion.h1>
-            </AnimatePresence>
-
-            <motion.div className="hero-tagline" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }}>
-              <AnimatePresence mode="wait">
-                <motion.span
-                  key={theme}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.5 }}
-                  className="mono text-accent"
-                  style={{ fontSize: '1.1rem', fontWeight: 700 }}
-                >
-                  {theme === 'night' ? "> WE RUN HARDER." : "> WE OPTIMIZE."}
-                </motion.span>
-              </AnimatePresence>
-            </motion.div>
-
-            <AnimatePresence mode='wait'>
-              <motion.p
-                key={theme}
-                className="hero-description"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.8, delay: 0.1, ease: "easeInOut" }}
-              >
-                {theme === 'night'
-                  ? "We operate in the quiet hours to ensure your business makes noise. Engineering high-performance commerce and automated infrastructure."
-                  : "But your systems shouldn't require manual effort. We automate the mundane so you can continue generating value."}
-              </motion.p>
-            </AnimatePresence>
-          </div>
-
-          <div className="hero-terminal-wrapper">
-            <Terminal />
-          </div>
-
+      {/* Hero Section */}
+      <header className="relative w-full h-screen flex flex-col justify-center px-margin-safe overflow-hidden">
+        <div className="absolute inset-0 z-0 opacity-40">
+          <ShaderBackground />
         </div>
-      </section>
-
-      {/* Knowledge / Logs Section */}
-      <section id="knowledge" style={{ padding: '80px 0', position: 'relative', zIndex: 10, background: 'var(--bg-primary)' }}>
-        <div className="section-header" style={{ marginBottom: '3rem' }}>
-          <span className="section-label">TRANSMISSION_LOGS</span>
-          <h2 className="section-title text-gradient">Signal & Noise</h2>
+        
+        <div className="relative z-10 fade-in-up">
+          <h1 className="font-display-lg text-display-lg md:text-[120px] text-primary leading-none tracking-tighter mb-8">
+            ARCHITECTING<br />SCALE
+          </h1>
+          <p className="font-body-lg text-body-lg text-on-surface-variant max-w-lg">
+            Scalable automation systems engineered with architectural precision. The intersection of robust cloud infrastructure and minimalist design.
+          </p>
         </div>
-
-        <div className="glass-card" style={{ padding: '0', overflow: 'hidden', minHeight: '400px' }}>
-          <div className="tabs-header">
-            <button
-              onClick={() => setActiveTab('logs')}
-              className={`tab-btn mono ${activeTab === 'logs' ? 'active' : ''}`}
-            >
-              01_ENGINEERING_LOGS
-            </button>
-            <button
-              onClick={() => setActiveTab('signals')}
-              className={`tab-btn mono ${activeTab === 'signals' ? 'active' : ''}`}
-            >
-              02_CURATED_SIGNALS
-            </button>
-          </div>
-
-          <div style={{ padding: '2rem' }}>
-            <AnimatePresence mode="wait">
-              {activeTab === 'logs' ? (
-                <motion.div
-                  key="logs"
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: 10 }}
-                  transition={{ duration: 0.3 }}
-                  style={{ display: 'grid', gap: '2rem' }}
-                >
-                  {engineeringLogs.map((log, i) => (
-                    <div key={i} className="log-item" style={{ paddingBottom: '1.5rem', borderBottom: i !== engineeringLogs.length - 1 ? '1px solid rgba(255,255,255,0.05)' : 'none', display: 'flex', flexDirection: 'column' }}>
-                      <div className="mono text-muted" style={{ fontSize: '0.7rem', marginBottom: '0.5rem' }}>[{log.date}]</div>
-                      <h3 className="brand-font" style={{ fontSize: '1.5rem', marginBottom: '0.8rem', color: 'var(--text-primary)' }}>{log.title}</h3>
-                      <p className="text-secondary" style={{ fontSize: '1rem', lineHeight: 1.6, maxWidth: '80%' }}>{log.tldr}</p>
-                      <Link to={log.link} className="mono text-accent" style={{ fontSize: '0.8rem', marginTop: '1rem', display: 'inline-flex', alignItems: 'center', gap: '4px', textDecoration: 'none' }}>
-                        READ_TRANSMISSION <ArrowRight size={14} />
-                      </Link>
-                    </div>
-                  ))}
-                </motion.div>
-              ) : (
-                <motion.div
-                  key="signals"
-                  initial={{ opacity: 0, x: 10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -10 }}
-                  transition={{ duration: 0.3 }}
-                  style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem' }}
-                >
-                  {curatedSignals.map((signal, i) => (
-                    <div key={i} style={{ padding: '1.5rem', background: 'rgba(255,255,255,0.03)', borderRadius: '4px', border: '1px solid rgba(255,255,255,0.05)' }}>
-                      <div className="mono text-accent" style={{ fontSize: '0.65rem', marginBottom: '1rem', display: 'inline-block', border: '1px solid var(--accent-primary)', padding: '2px 6px', borderRadius: '4px' }}>{signal.type}</div>
-                      <h4 className="brand-font" style={{ fontSize: '1.2rem', marginBottom: '0.5rem', color: 'var(--text-primary)' }}>{signal.title}</h4>
-                      <div className="mono text-muted" style={{ fontSize: '0.8rem' }}>By {signal.author}</div>
-                    </div>
-                  ))}
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
+        
+        <div className="absolute bottom-12 left-margin-safe flex items-center gap-4 fade-in-up" style={{ transitionDelay: '0.3s' }}>
+          <span className="block w-12 h-fine-line bg-outline"></span>
+          <span className="font-label-caps text-label-caps text-on-surface-variant">SCROLL TO EXPLORE</span>
         </div>
-      </section >
+      </header>
 
-      <section id="capabilities" style={{ padding: '80px 0', position: 'relative', zIndex: 10, background: 'var(--bg-primary)' }}>
-        <div className="section-header">
-          <span className="section-label">SYSTEM_CAPABILITIES_INVENTORY</span>
-          <h2 className="section-title text-gradient">Core Modules</h2>
-        </div>
-        <div className="services-grid">
-          {capabilities.map((cap, i) => (
-            <motion.div
-              key={i}
-              className="glass-card service-card"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
-            >
-              <div className="service-header">
-                <div className="service-icon">{cap.icon}</div>
-                <div className="service-id mono">{cap.id}</div>
-              </div>
-              <h3 className="service-name brand-font">{cap.name}</h3>
-              <p className="service-description">{cap.description}</p>
-              <div className="service-tags">
-                {cap.tags.map(tag => <span key={tag} className="tag">{tag}</span>)}
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </section>
-
-      <section id="projects" style={{ padding: '80px 0', position: 'relative', zIndex: 10, background: 'var(--bg-primary)' }}>
-        <div className="section-header">
-          <span className="section-label">SELECTED_OUTPUT_LOGS</span>
-          <h2 className="section-title text-gradient">Engineered Solutions</h2>
-        </div>
-
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
-
-          {/* Project 1: Hydrogen */}
-          <div className="glass-card project-terminal">
-            <div className="terminal-header" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)', padding: '1rem', background: 'rgba(0,0,0,0.2)' }}>
-              <div className="terminal-controls">
-                <div className="terminal-dot" style={{ background: '#FF5F56' }} />
-                <div className="terminal-dot" style={{ background: '#FFBD2E' }} />
-                <div className="terminal-dot" style={{ background: '#27C93F' }} />
-              </div>
-              <div className="mono text-muted" style={{ fontSize: '0.75rem' }}>trace_id: hydrogen_migration</div>
-            </div>
-            <div className="project-content" style={{ padding: '2rem' }}>
-              <div className="mono text-accent" style={{ marginBottom: '1rem', fontSize: '0.8rem' }}>CASE_STUDY_01</div>
-              <h3 className="brand-font" style={{ fontSize: '1.8rem', marginBottom: '1rem', lineHeight: 1.1 }}>Enterprise Scale<br />Commerce</h3>
-              <p className="text-secondary" style={{ marginBottom: '2rem', minHeight: '80px' }}>
-                Re-architecting a legacy liquid storefront for a global fashion brand.
-                Complete migration to Hydrogen/Oxygen for sub-second performance.
-              </p>
-              <div className="metrics-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-                <div>
-                  <div className="text-accent brand-font" style={{ fontSize: '2rem' }}>+48%</div>
-                  <div className="mono text-muted" style={{ fontSize: '0.6rem' }}>CONVERSION_LIFT</div>
-                </div>
-                <div>
-                  <div className="text-accent brand-font" style={{ fontSize: '2rem' }}>-1.2s</div>
-                  <div className="mono text-muted" style={{ fontSize: '0.6rem' }}>LCP_REDUCTION</div>
+      <main className="w-full">
+        {/* DIGEST Section */}
+        <section className="pt-section-gap pb-element-gap px-margin-safe relative" id="digest">
+          <div className="absolute top-0 left-margin-safe right-margin-safe h-fine-line bg-outline-variant"></div>
+          <h2 className="font-headline-md text-headline-md text-primary mb-24 fade-in-up">01. THE DIGEST</h2>
+          
+          <div className="flex flex-col gap-8 w-full md:w-3/4 mx-auto fade-in-up">
+            {engineeringLogs.map((log, i) => (
+              <div key={i} className="bracket-border hover:bg-surface-container-low transition-colors duration-300">
+                <div className="flex flex-col md:flex-row justify-between items-start gap-4">
+                  <div>
+                    <div className="font-label-caps text-label-caps text-on-surface-variant mb-2">[{log.date}]</div>
+                    <h3 className="font-body-lg text-body-lg text-primary mb-2 font-semibold">{log.title}</h3>
+                    <p className="font-body-sm text-body-sm text-on-surface-variant max-w-md">{log.tldr}</p>
+                  </div>
+                  <Link to={log.link} className="font-label-caps text-label-caps text-primary border-b border-outline pb-1 hover:text-secondary hover:border-secondary transition-colors inline-flex items-center gap-2 mt-4 md:mt-0">
+                    READ <ArrowRight size={14} />
+                  </Link>
                 </div>
               </div>
-              <div className="architecture-container glass" style={{ marginTop: '2rem', padding: '1rem', borderRadius: '8px', position: 'relative', overflow: 'hidden', height: '180px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <div className="scanline" style={{ position: 'absolute', inset: 0, mixBlendMode: 'overlay', pointerEvents: 'none', opacity: 0.1 }}></div>
-                <ArchitectureDiagram />
+            ))}
+          </div>
+        </section>
+
+        {/* WORK Section */}
+        <section className="pt-section-gap pb-element-gap px-margin-safe relative" id="work">
+          <div className="absolute top-0 left-margin-safe right-margin-safe h-fine-line bg-outline-variant"></div>
+          <h2 className="font-headline-md text-headline-md text-primary mb-24 fade-in-up">02. WORK</h2>
+          
+          <div className="flex flex-col gap-32">
+            {/* Project 1 */}
+            <article className="fade-in-up organic-offset-1 w-full md:w-2/3">
+              <div className="mb-element-gap">
+                <img 
+                  src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=2070&auto=format&fit=crop" 
+                  alt="Enterprise Scale Commerce" 
+                  className="w-full h-auto grayscale hover:grayscale-0 transition-all duration-700 ease-in-out object-cover aspect-[4/3]"
+                />
               </div>
+              <div className="flex flex-col md:flex-row justify-between items-start gap-8 border-t border-outline-variant pt-8">
+                <div>
+                  <h3 className="font-body-lg text-body-lg text-primary mb-2 font-semibold">ENTERPRISE SCALE COMMERCE</h3>
+                  <p className="font-body-sm text-body-sm text-on-surface-variant max-w-sm">
+                    Re-architecting a legacy liquid storefront for a global fashion brand. Complete migration to Hydrogen/Oxygen for sub-second performance.
+                  </p>
+                </div>
+                <div className="flex flex-col gap-2">
+                  <div className="font-label-caps text-label-caps text-on-surface-variant">METRICS</div>
+                  <div className="font-body-sm text-primary">+48% CONVERSION LIFT</div>
+                  <div className="font-body-sm text-primary">-1.2s LCP REDUCTION</div>
+                </div>
+              </div>
+            </article>
+
+            {/* Project 2 */}
+            <article className="fade-in-up organic-offset-3 w-full md:w-1/2">
+              <div className="mb-element-gap">
+                <img 
+                  src="https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=2070&auto=format&fit=crop" 
+                  alt="Herbology Architecture" 
+                  className="w-full h-auto grayscale hover:grayscale-0 transition-all duration-700 ease-in-out object-cover aspect-[3/4]"
+                />
+              </div>
+              <div className="flex flex-col md:flex-row justify-between items-start gap-8 bracket-border pt-8">
+                <div>
+                  <h3 className="font-body-lg text-body-lg text-primary mb-2 font-semibold">
+                    <a href="https://herbology.com.my/" target="_blank" rel="noreferrer" className="hover:underline">HERBOLOGY REFACTOR</a>
+                  </h3>
+                  <p className="font-body-sm text-body-sm text-on-surface-variant max-w-sm">
+                    Full-stack Shopify overhaul for a premium clean beauty brand. Custom Liquid theme implementation with integrated subscription logic.
+                  </p>
+                </div>
+                <div className="flex flex-col gap-2">
+                  <div className="font-label-caps text-label-caps text-on-surface-variant">STACK</div>
+                  <div className="font-body-sm text-primary">Liquid, Alpine.js, Tailwind</div>
+                </div>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        {/* CRAFT Section */}
+        <section className="pt-section-gap pb-element-gap px-margin-safe relative" id="craft">
+          <div className="absolute top-0 left-margin-safe right-margin-safe h-fine-line bg-outline-variant"></div>
+          <div className="flex flex-col md:flex-row gap-element-gap justify-between items-start">
+            <h2 className="font-headline-md text-headline-md text-primary fade-in-up sticky top-32">03. CRAFT</h2>
+            <div className="w-full md:w-2/3 flex flex-col gap-16">
+              
+              <div className="fade-in-up border-l border-outline-variant pl-8 py-4 relative">
+                <span className="absolute -left-[5px] top-4 w-2 h-2 bg-primary rounded-full"></span>
+                <h3 className="font-label-caps text-label-caps text-on-surface-variant mb-4">OPERATIONAL ARCHITECTURE</h3>
+                <p className="font-body-lg text-[24px] md:text-[32px] text-primary leading-tight tracking-tight">
+                  Bridging the gap between physical logistics and technical execution. Engineering scalable AWS infrastructure that handles high-volume traffic while fiercely optimizing for cost-efficiency.
+                </p>
+              </div>
+
+              <div className="fade-in-up border-l border-outline-variant pl-8 py-4 relative">
+                <span className="absolute -left-[5px] top-4 w-2 h-2 bg-surface-variant rounded-full"></span>
+                <h3 className="font-label-caps text-label-caps text-on-surface-variant mb-4">SYSTEM RESILIENCE</h3>
+                <p className="font-body-lg text-[24px] md:text-[32px] text-primary leading-tight tracking-tight">
+                  Architecting self-healing, auto-scaling patterns that guarantee continuous uptime. Defining robust automated deployments and Infrastructure-as-a-Code to ensure stability across complex environments.
+                </p>
+              </div>
+
+              <div className="fade-in-up border-l border-outline-variant pl-8 py-4 relative">
+                <span className="absolute -left-[5px] top-4 w-2 h-2 bg-outline-variant rounded-full"></span>
+                <h3 className="font-label-caps text-label-caps text-on-surface-variant mb-4">AI-AUGMENTED AUTOMATION</h3>
+                <p className="font-body-lg text-[24px] md:text-[32px] text-primary leading-tight tracking-tight">
+                  Rapidly deploying bespoke business applications using agentic development workflows. Designing sophisticated automations and intelligence pipelines to eliminate manual overhead and eradicate bottlenecks.
+                </p>
+              </div>
+
             </div>
           </div>
+        </section>
 
-          {/* Project 2: Herbology */}
-          <div className="glass-card project-terminal">
-            <div className="terminal-header" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)', padding: '1rem', background: 'rgba(0,0,0,0.2)' }}>
-              <div className="terminal-controls">
-                <div className="terminal-dot" style={{ background: '#FF5F56' }} />
-                <div className="terminal-dot" style={{ background: '#FFBD2E' }} />
-                <div className="terminal-dot" style={{ background: '#27C93F' }} />
-              </div>
-              <div className="mono text-muted" style={{ fontSize: '0.75rem' }}>trace_id: herbology_build</div>
-            </div>
-            <div className="project-content" style={{ padding: '2rem' }}>
-              <div className="mono text-accent" style={{ marginBottom: '1rem', fontSize: '0.8rem' }}>CASE_STUDY_02</div>
-              <h3 className="brand-font" style={{ fontSize: '1.8rem', marginBottom: '1rem', lineHeight: 1.1 }}>
-                <a href="https://herbology.com.my" target="_blank" rel="noreferrer" style={{ color: 'inherit', textDecoration: 'underline' }}>Herbology.com.my</a>
-                <br />Refactor
-              </h3>
-              <p className="text-secondary" style={{ marginBottom: '2rem', minHeight: '80px' }}>
-                Full-stack Shopify overhaul for a premium clean beauty brand. Custom Liquid theme implementation with integrated subscription logic.
-              </p>
-              <div className="metrics-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-                <div>
-                  <div className="text-accent brand-font" style={{ fontSize: '2rem' }}>98/100</div>
-                  <div className="mono text-muted" style={{ fontSize: '0.6rem' }}>SEO_SCORE</div>
-                </div>
-                <div>
-                  <div className="text-accent brand-font" style={{ fontSize: '2rem' }}>3.2x</div>
-                  <div className="mono text-muted" style={{ fontSize: '0.6rem' }}>RETENTION_RATE</div>
-                </div>
-              </div>
-              <div className="glass" style={{ marginTop: '2rem', padding: '1.5rem', borderRadius: '8px', height: '180px', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: '1rem' }}>
-                <div className="mono" style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>STACK_TRACE:</div>
-                <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-                  {['Liquid', 'Alpine.js', 'Tailwind', 'Recharge API'].map(tag => (
-                    <span key={tag} style={{ fontSize: '0.65rem', padding: '4px 8px', background: 'rgba(255,255,255,0.05)', borderRadius: '4px', border: '1px solid rgba(255,255,255,0.1)' }}>{tag}</span>
-                  ))}
-                </div>
-                <div className="mono text-accent" style={{ fontSize: '0.7rem', marginTop: '0.5rem' }}>
-                  {'> deploying to production... DONE'}
-                </div>
-              </div>
-            </div>
+        {/* MANIFESTO Section */}
+        <section className="py-section-gap px-margin-safe relative bg-surface-container-low" id="manifesto">
+          <div className="max-w-4xl mx-auto text-center flex flex-col items-center">
+            <span className="material-symbols-outlined text-4xl text-outline mb-12 fade-in-up" style={{ fontVariationSettings: "'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24" }}>architecture</span>
+            <p className="font-display-lg md:text-[56px] text-display-lg text-primary leading-tight tracking-tighter mb-12 fade-in-up">
+              Automation is about achieving maximum impact with minimal overhead. It is the practice of engineering lean systems that handle complexity while remaining fiercely frugal with your project budget, ensuring you scale efficiently without unnecessary costs.
+            </p>
+            <div className="h-16 w-fine-line bg-outline fade-in-up"></div>
           </div>
-
-        </div>
-      </section>
+        </section>
+      </main>
     </>
   )
 }

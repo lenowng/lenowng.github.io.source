@@ -1,73 +1,38 @@
-# React + TypeScript + Vite
+# LEON.WONG | Architecting Scale
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Personal portfolio and digital hub for Leon Wong, Solutions Architect and Automation Engineer.
 
-Currently, two official plugins are available:
+## Overview
+This repository contains the front-end application for `lenowng.github.io`. 
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+The design follows the **Artisanal Logic** aesthetic, utilizing a disciplined structural layout, WebGL shader interactions, and a strict minimalist color palette to represent high-end engineering and automation.
 
-## React Compiler
+## Tech Stack
+- **Framework:** React + TypeScript + Vite
+- **Styling:** Tailwind CSS (v3)
+- **Routing:** React Router v7
+- **Graphics:** Pure WebGL (Three.js-style implementation for background interactions)
+- **Icons/Fonts:** Lucide React, Google Fonts (Inter, Material Symbols Outlined)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Core Components
+- **Hero System:** Features a bespoke, interactive WebGL shader (`ShaderBackground.tsx`) simulating intersecting grid lines that react to cursor movement.
+- **The Digest:** An automated curated blog feed to highlight architectural insights and technical explorations.
+- **Projects Feed:** Uses an `organic-offset` structural pattern to display engineering case studies with precision and negative space.
 
-## Expanding the ESLint configuration
+## Setup Instructions
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+1. **Install Dependencies:**
+   ```bash
+   npm install
+   ```
+2. **Run Development Server:**
+   ```bash
+   npm run dev
+   ```
+3. **Build for Production:**
+   ```bash
+   npm run build
+   ```
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## Development Rules
+Please see `RULE.md` for governing principles of this codebase, specifically regarding documentation alignment.

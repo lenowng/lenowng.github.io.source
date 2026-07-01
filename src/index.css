@@ -1,252 +1,42 @@
-@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-:root {
-  /* Branding Colors */
-  --bg-primary: #0B0E14;
-  /* Obsidian */
-  --bg-secondary: #0D1117;
-  --surface-card: #161B22;
-  --surface-card-hover: #1C2128;
-
-  --accent-primary: #00FF9C;
-  /* Cyber Lime */
-  --accent-primary-dim: rgba(0, 255, 156, 0.12);
-  --accent-secondary: #FF9900;
-  /* AWS Orange */
-  --accent-secondary-dim: rgba(255, 153, 0, 0.1);
-  --text-active: #FFFFFF;
-  --text-primary: #E6EDF3;
-  --text-secondary: #8B949E;
-  --text-muted: #484F58;
-
-  /* Layout & Spacing */
-  --nav-height: 90px;
-  --container-max-width: 1400px;
-
-  /* Advanced Effects */
-  --blur-md: blur(20px);
-  --transition-smooth: 500ms cubic-bezier(0.16, 1, 0.3, 1);
-  --transition-fast: 250ms cubic-bezier(0.16, 1, 0.3, 1);
-  --glow-accent: 0 0 40px rgba(0, 255, 156, 0.2);
-  --glass-border: 1px solid rgba(255, 255, 255, 0.08);
-  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-
-  /* Theming - Default is Dark/Night */
-  --toggle-offset: 2px;
+@layer base {
+  .material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  }
 }
 
-[data-theme="day"] {
-  --bg-primary: #F0F2F5;
-  --bg-secondary: #FFFFFF;
-  --surface-card: #FFFFFF;
-  --surface-card-hover: #F8FAFC;
-  --text-primary: #1E293B;
-  --text-secondary: #475569;
-  --text-muted: #94A3B8;
-  --accent-primary: #0EA5E9;
-  /* Sky Blue for Day */
-  --accent-primary-dim: rgba(14, 165, 233, 0.1);
-}
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+@layer utilities {
+  .fade-in-up {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 1s cubic-bezier(0.2, 0.8, 0.2, 1), transform 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  
+  .fade-in-up.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  .organic-offset-1 { margin-left: 20%; }
+  .organic-offset-2 { margin-left: 50%; }
+  .organic-offset-3 { margin-left: 10%; }
+  
+  @media (max-width: 768px) {
+    .organic-offset-1, .organic-offset-2, .organic-offset-3 {
+        margin-left: 0;
+    }
+  }
+  
+  .bracket-border {
+    border-left: 1px solid theme('colors.outline');
+    border-top: 1px solid theme('colors.outline');
+    padding: 2rem;
+  }
 }
 
 body {
-  background-color: var(--bg-primary);
-  color: var(--text-primary);
-  font-family: 'Archivo', sans-serif;
-  letter-spacing: -0.01em;
-  -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
-  line-height: 1.7;
-  transition: background-color var(--transition-smooth), color var(--transition-smooth);
-}
-
-h1,
-h2,
-h3,
-h4,
-.brand-font {
-  font-family: 'Space Grotesk', sans-serif;
-  font-weight: 700;
-  letter-spacing: -0.03em;
-}
-
-code,
-.mono {
-  font-family: 'JetBrains Mono', monospace;
-}
-
-/* Custom Cursor & Scrollbar */
-::-webkit-scrollbar {
-  width: 5px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--bg-primary);
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--text-muted);
-  border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--accent-primary);
-}
-
-/* --- Branded Background System --- */
-
-.grid-background {
-  position: fixed;
-  inset: -100px;
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-  background-size: 50px 50px;
-  z-index: -1;
-  mask-image: radial-gradient(circle at center, black, transparent 80%);
-  pointer-events: none;
-  opacity: 0.1;
-  /* Default Dim */
-  transition: opacity var(--transition-smooth);
-}
-
-[data-theme="day"] .grid-background {
-  background-image:
-    linear-gradient(rgba(0, 0, 0, 0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
-  opacity: 0.6;
-}
-
-.noise-overlay {
-  position: fixed;
-  inset: 0;
-  opacity: 0.04;
-  z-index: 1000;
-  pointer-events: none;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-}
-
-/* Scanline Effect - Only visible in Night Mode */
-.scanline {
-  position: relative;
-  overflow: hidden;
-}
-
-[data-theme="day"] .scanline::after {
-  display: none;
-}
-
-.scanline::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  background: rgba(0, 255, 156, 0.08);
-  opacity: 0.5;
-  animation: scanline-anim 8s linear infinite;
-  pointer-events: none;
-  z-index: 10;
-}
-
-@keyframes scanline-anim {
-  0% {
-    transform: translateY(-100%);
-  }
-
-  100% {
-    transform: translateY(100vh);
-  }
-}
-
-/* Glassmorphism Styles */
-.glass {
-  background: rgba(11, 14, 20, 0.65);
-  backdrop-filter: var(--blur-md);
-  -webkit-backdrop-filter: var(--blur-md);
-  border: var(--glass-border);
-  box-shadow: var(--glass-shadow);
-  transition: all var(--transition-smooth);
-}
-
-[data-theme="day"] .glass {
-  background: rgba(255, 255, 255, 0.85);
-  border: 1px solid rgba(0, 0, 0, 0.05);
-}
-
-.glass-card {
-  background: rgba(22, 27, 34, 0.3);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 20px;
-  transition: var(--transition-smooth);
-}
-
-[data-theme="day"] .glass-card {
-  background: rgba(255, 255, 255, 0.65);
-  border: 1px solid rgba(0, 0, 0, 0.04);
-  box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.05);
-}
-
-.glass-card:hover {
-  border-color: var(--accent-primary);
-  background: rgba(28, 33, 40, 0.6);
-  box-shadow: var(--glow-accent);
-}
-
-[data-theme="day"] .glass-card:hover {
-  background: rgba(255, 255, 255, 0.9);
-  border-color: var(--accent-primary);
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-}
-
-/* Branding Typography */
-.text-accent {
-  color: var(--accent-primary);
-}
-
-.text-gradient {
-  background: linear-gradient(135deg, var(--text-active) 0%, var(--text-secondary) 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-[data-theme="day"] .text-gradient {
-  background: linear-gradient(135deg, var(--text-primary) 0%, var(--text-secondary) 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-
-.btn-primary {
-  background: var(--accent-primary);
-  color: #0B0E14;
-  /* Always dark text on button */
-  padding: 1rem 2rem;
-  border-radius: 4px;
-  font-weight: 700;
-  font-family: 'Space Grotesk', sans-serif;
-  border: none;
-  cursor: pointer;
-  transition: var(--transition-fast);
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  font-size: 0.75rem;
-}
-
-.btn-primary:hover {
-  box-shadow: 0 0 30px var(--accent-primary);
-  transform: translateY(-2px);
-}
-
-.cursor-pointer {
-  cursor: pointer;
+  @apply bg-surface text-on-surface antialiased overflow-x-hidden selection:bg-surface-variant selection:text-on-surface;
 }
