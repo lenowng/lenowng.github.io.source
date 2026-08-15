@@ -23,10 +23,11 @@ const Layout = () => {
       <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-xl border-b border-zinc-200/80 transition-all">
         <div className="max-w-7xl mx-auto px-margin-safe py-4 flex items-center justify-between">
           
-          {/* Brand Mark with Integrated Location Stamp */}
+          {/* Brand Mark with Integrated Monogram Emblem & Location Stamp */}
           <div className="flex items-center gap-4">
             <BrandLogo 
               size="md" 
+              showIcon={true}
               onClick={() => {
                 if (location.pathname !== '/') navigate('/')
                 else window.scrollTo({ top: 0, behavior: 'smooth' })

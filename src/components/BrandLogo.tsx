@@ -2,12 +2,14 @@ import React from 'react'
 
 interface BrandLogoProps {
   size?: 'sm' | 'md' | 'lg' | 'monumental'
+  showIcon?: boolean
   onClick?: () => void
   className?: string
 }
 
 export const BrandLogo: React.FC<BrandLogoProps> = ({
   size = 'md',
+  showIcon = false,
   onClick,
   className = ''
 }) => {
@@ -18,11 +20,28 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
     monumental: 'text-5xl sm:text-7xl md:text-8xl lg:text-[100px] tracking-tighter'
   }
 
+  const iconSizes = {
+    sm: 'w-6 h-6 text-[10px] rounded-lg',
+    md: 'w-7 h-7 text-xs rounded-lg',
+    lg: 'w-10 h-10 text-base rounded-xl',
+    monumental: 'w-16 h-16 text-2xl rounded-2xl'
+  }
+
   return (
     <div
       onClick={onClick}
-      className={`inline-flex items-baseline cursor-pointer select-none group font-display-lg transition-opacity duration-150 active:opacity-75 hover:opacity-85 ${className}`}
+      className={`inline-flex items-center gap-2.5 cursor-pointer select-none group font-display-lg transition-opacity duration-150 active:opacity-75 hover:opacity-85 ${className}`}
     >
+      {/* Cohesive L·W Squircle Emblem */}
+      {showIcon && (
+        <div className={`bg-zinc-950 text-white flex items-center justify-center font-display-lg font-semibold tracking-tight shadow-sm shrink-0 ${iconSizes[size]}`}>
+          <span className="font-bold">L</span>
+          <span className="text-zinc-500 font-light text-[8px] mx-0.5">·</span>
+          <span className="font-light text-zinc-300">W</span>
+        </div>
+      )}
+
+      {/* Typographic Logotype */}
       <div className={`flex items-baseline leading-none text-zinc-950 font-normal ${sizeClasses[size]}`}>
         {/* LEON */}
         <span className="font-semibold text-zinc-950">
