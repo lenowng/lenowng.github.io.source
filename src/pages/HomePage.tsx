@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { ArrowRight, ShoppingBag, Server, Zap, Code, ArrowUpRight, CheckCircle2, TrendingUp, MessageSquare } from 'lucide-react'
+import { ArrowRight, ShoppingBag, Server, Zap, Code, ArrowUpRight, MessageSquare } from 'lucide-react'
 import { Link, useOutletContext } from 'react-router-dom'
 import ShaderBackground from '../components/ShaderBackground'
 import Hero3DCanvas from '../components/Hero3DCanvas'
@@ -75,11 +75,11 @@ const HomePage = () => {
   ]
 
   const clientLogos = [
-    { name: "Herbology Clean Beauty", label: "HERBOLOGY" },
-    { name: "Shopify Plus Partner", label: "SHOPIFY PLUS" },
-    { name: "AWS Cloud Architecture", label: "AWS CLOUD" },
-    { name: "Hydrogen Headless", label: "HYDROGEN REACT" },
-    { name: "Atlassian ScriptRunner", label: "ATLASSIAN JIRA" }
+    { label: "HERBOLOGY", name: "Clean Beauty Storefront Overhaul" },
+    { label: "SHOPIFY PLUS", name: "Custom Liquid & Checkout Architecture" },
+    { label: "AWS CLOUD", name: "Auto-Scaling Serverless Microservices" },
+    { label: "HYDROGEN REACT", name: "Sub-Second Headless Storefronts" },
+    { label: "ATLASSIAN JIRA", name: "ScriptRunner Workflow Automations" }
   ]
 
   return (
@@ -122,7 +122,7 @@ const HomePage = () => {
           </motion.p>
 
           {/* Action Buttons */}
-          <motion.div variants={itemVariants} className="flex flex-wrap gap-4 items-center mb-16">
+          <motion.div variants={itemVariants} className="flex flex-wrap gap-4 items-center">
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
@@ -141,53 +141,35 @@ const HomePage = () => {
               Explore Services &amp; Scope
             </motion.a>
           </motion.div>
-
-          {/* Metrics Row */}
-          <motion.div variants={itemVariants} className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-8 border-t border-zinc-200 max-w-2xl">
-            <div className="p-4 bg-white/80 rounded-2xl border border-zinc-200/80 shadow-sm">
-              <div className="flex items-center gap-2 text-zinc-950 font-headline-md text-2xl font-normal">
-                <TrendingUp size={18} className="text-zinc-500" /> &lt;1.2s
-              </div>
-              <div className="font-label-caps text-[10px] text-zinc-500 uppercase mt-1">Shopify LCP Speed</div>
-            </div>
-
-            <div className="p-4 bg-white/80 rounded-2xl border border-zinc-200/80 shadow-sm">
-              <div className="flex items-center gap-2 text-zinc-950 font-headline-md text-2xl font-normal">
-                <CheckCircle2 size={18} className="text-zinc-500" /> 99.99%
-              </div>
-              <div className="font-label-caps text-[10px] text-zinc-500 uppercase mt-1">Cloud Uptime SLA</div>
-            </div>
-
-            <div className="p-4 bg-white/80 rounded-2xl border border-zinc-200/80 shadow-sm">
-              <div className="flex items-center gap-2 text-zinc-950 font-headline-md text-2xl font-normal">
-                <Zap size={18} className="text-zinc-500" /> ~40 Hrs
-              </div>
-              <div className="font-label-caps text-[10px] text-zinc-500 uppercase mt-1">Weekly Time Saved</div>
-            </div>
-          </motion.div>
         </motion.div>
       </header>
 
       {/* Copenhagen Architectural Curved Shell */}
       <main className="w-full relative z-10 rounded-t-[36px] sm:rounded-t-[44px] bg-white border-t border-zinc-200 shadow-[0_-20px_50px_-15px_rgba(9,9,11,0.03)] pt-16">
         
-        {/* Partner & Platform Proof Strip */}
+        {/* Partner & Platform Editorial Masthead Strip */}
         <section className="px-margin-safe pb-20 border-b border-zinc-100">
           <div className="max-w-7xl mx-auto">
-            <div className="flex items-center gap-8 mb-8 fade-in-up">
-              <span className="font-label-caps text-[10px] text-zinc-400 font-medium tracking-widest uppercase whitespace-nowrap">
-                PROVEN ACROSS HIGH-GROWTH PLATFORMS
+            <div className="flex items-center gap-8 mb-10 fade-in-up">
+              <span className="font-label-caps text-[10px] text-zinc-400 font-semibold tracking-widest uppercase whitespace-nowrap">
+                PROVEN ACROSS HIGH-GROWTH PLATFORMS &amp; ECOSYSTEMS
               </span>
               <div className="h-px w-full bg-zinc-200"></div>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 items-center fade-in-up">
+            {/* Flat Editorial Brand Monograph Strip (Non-interactive, Zero Button Affordance) */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-8 lg:gap-0 lg:divide-x lg:divide-zinc-200 fade-in-up">
               {clientLogos.map((item, idx) => (
                 <div 
                   key={idx} 
-                  className="py-3.5 px-5 rounded-xl bg-zinc-50 border border-zinc-200 text-center font-display-lg text-xs font-semibold text-zinc-700 tracking-wider hover:text-zinc-950 hover:bg-white hover:border-zinc-400 transition-all shadow-sm"
+                  className="flex flex-col justify-start lg:px-6 first:lg:pl-0 last:lg:pr-0"
                 >
-                  {item.label}
+                  <div className="font-display-lg text-sm sm:text-base font-semibold text-zinc-950 tracking-wider">
+                    {item.label}
+                  </div>
+                  <div className="font-body-sm text-xs text-zinc-500 font-light mt-1">
+                    {item.name}
+                  </div>
                 </div>
               ))}
             </div>
