@@ -23,21 +23,17 @@ A disciplined, architectural approach to web design. The aesthetic combines the 
 
 ---
 
-## 3. The Core Element: The Automated Curated Digest
-The website serves as an active hub of knowledge.
-*   **The Concept:** A live-updating "digest" or feed that curates engineering insights, automation strategies, and technical case studies.
-*   **UX Execution:** A clean, bracket-bordered layout. Content is easily scannable and driven by a focus on written logic rather than excessive styling.
-
----
-
-## 4. Service Architecture & Value Proposition
+## 3. Service Architecture & Value Proposition
 How we deliver value to businesses:
 
-### 1. Process Automation & Efficiency
-*   Eliminating manual data entry, bridging incompatible APIs, and streamlining day-to-day operations.
+### 1. Shopify & E-Commerce Engineering
+* Custom Liquid themes, Hydrogen/Oxygen headless React storefronts, Shopify Admin Apps, POS UI extensions, and checkout optimization.
 
-### 2. Solutions Architecture
-*   Designing robust cloud systems (AWS, Serverless) and e-commerce infrastructures (Shopify) that scale without fracturing.
+### 2. AWS Cloud & Serverless Infrastructure
+* Auto-scaling AWS Lambda, API Gateway, DynamoDB, SQS queues, and serverless infrastructure-as-code deployment.
 
-### 3. Tech-Driven Growth
-*   Unlocking new potentials through custom apps, optimized UI/UX, and data-driven insights.
+### 3. Workflow Automation & API Integration
+* Order rescheduling apps, automated tagging pipelines, custom API bridges, and JIRA/Groovy business logic scripts.
+
+### 4. Full-Stack Web Engineering
+* Bespoke web applications, internal dashboards, and client portals built with React, Next.js, Hono, TypeScript, and Tailwind CSS.

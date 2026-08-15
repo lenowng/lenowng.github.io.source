@@ -29,44 +29,32 @@ void main() {
   gl_Position = vec4(a_position, 0.0, 1.0);
 }`
 
+    // Pure Minimalist Monochromatic Ambient Light Canvas
     const fs = `precision highp float;
 varying vec2 v_uv;
 uniform float u_time;
 uniform vec2 u_resolution;
 uniform vec2 u_mouse;
 
-float line(vec2 p, vec2 a, vec2 b, float width) {
-    vec2 pa = p - a, ba = b - a;
-    float h = clamp(dot(pa, ba) / dot(ba, ba), 0.0, 1.0);
-    return smoothstep(width, 0.0, length(pa - ba * h));
-}
-
 void main() {
     vec2 uv = v_uv;
     vec2 mouse = u_mouse / u_resolution;
     
-    vec3 bgColor = vec3(0.976, 0.976, 0.976); // #f9f9f9 (background)
-    vec3 lineColor = vec3(0.173, 0.173, 0.173); // #2c2c2c (lines)
+    // Crisp off-white base surface
+    vec3 bgColor = vec3(0.985, 0.985, 0.988); // #fafafa
     
-    float mask = 0.0;
+    // Subtle monochromatic depth wave
+    float t = u_time * 0.2;
+    float wave = sin(uv.x * 2.5 + t + sin(uv.y * 2.0 + t)) * 0.5 + 0.5;
     
-    for(float i = 0.1; i < 1.0; i += 0.1) {
-        float x = i + sin(u_time * 0.2 + i * 10.0) * 0.01;
-        float distToMouseX = abs(uv.x - mouse.x);
-        float mouseEffectX = smoothstep(0.2, 0.0, distToMouseX) * 0.02;
-        mask += line(uv, vec2(x + mouseEffectX, 0.0), vec2(x - mouseEffectX, 1.0), 0.001);
-        
-        float y = i + cos(u_time * 0.2 + i * 10.0) * 0.01;
-        float distToMouseY = abs(uv.y - mouse.y);
-        float mouseEffectY = smoothstep(0.2, 0.0, distToMouseY) * 0.02;
-        mask += line(uv, vec2(0.0, y + mouseEffectY), vec2(1.0, y - mouseEffectY), 0.001);
-    }
+    float distMouse = length(uv - mouse);
+    float mouseAura = smoothstep(0.5, 0.0, distMouse) * 0.04;
     
-    mask += line(uv, vec2(mouse.x, 0.0), vec2(mouse.x, 1.0), 0.0015) * 0.5;
-    mask += line(uv, vec2(0.0, mouse.y), vec2(1.0, mouse.y), 0.0015) * 0.5;
+    vec3 subtleZinc = vec3(0.965, 0.965, 0.97);
+    vec3 color = mix(bgColor, subtleZinc, wave * 0.4);
+    color -= vec3(0.015) * mouseAura;
 
-    vec3 finalColor = mix(bgColor, lineColor, clamp(mask, 0.0, 0.15));
-    gl_FragColor = vec4(finalColor, 1.0);
+    gl_FragColor = vec4(color, 1.0);
 }`
 
     function cs(type: number, src: string) {
@@ -77,6 +65,7 @@ void main() {
       gl.compileShader(s)
       return s
     }
+
     const prog = gl.createProgram()
     if (!prog) return
     const vShader = cs(gl.VERTEX_SHADER, vs)
@@ -102,12 +91,12 @@ void main() {
 
     const handleMouseMove = (e: MouseEvent) => {
       const rect = canvas.getBoundingClientRect()
-      mouse.x = (e.clientX - rect.left) / rect.width * canvas.width
-      mouse.y = (1.0 - (e.clientY - rect.top) / rect.height) * canvas.height
+      mouse.x = e.clientX - rect.left
+      mouse.y = rect.height - (e.clientY - rect.top)
     }
     window.addEventListener('mousemove', handleMouseMove)
 
-    let animationFrameId: number;
+    let animationFrameId: number
     function render(t: number) {
       if (!gl || !canvas) return
       gl.viewport(0, 0, canvas.width, canvas.height)
@@ -129,7 +118,7 @@ void main() {
   return (
     <canvas 
       ref={canvasRef} 
-      className="absolute inset-0 w-full h-full" 
+      className="absolute inset-0 w-full h-full pointer-events-none" 
     />
   )
 }

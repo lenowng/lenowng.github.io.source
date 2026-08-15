@@ -1,12 +1,11 @@
-import { useState, useEffect } from 'react';
-import { Search, ExternalLink, ArrowRight } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { useState } from 'react'
+import { Search, ExternalLink, ArrowRight } from 'lucide-react'
+import { Link } from 'react-router-dom'
+import SpotlightCard from '../components/SpotlightCard'
 
 const ReadsPage = () => {
-  const [activeTab, setActiveTab] = useState<'all' | 'essays' | 'curation'>('all');
-  const [searchQuery, setSearchQuery] = useState('');
-
-
+  const [activeTab, setActiveTab] = useState<'all' | 'essays' | 'curation'>('all')
+  const [searchQuery, setSearchQuery] = useState('')
 
   const writtenPosts = [
     {
@@ -49,7 +48,7 @@ const ReadsPage = () => {
       readTime: '8 min read',
       url: '/blog/automation'
     }
-  ];
+  ]
 
   const curatedReads = [
     {
@@ -96,147 +95,133 @@ const ReadsPage = () => {
       type: 'curation',
       url: '#'
     }
-  ];
+  ]
 
-  const allItems = [...writtenPosts, ...curatedReads].sort((a, b) =>
-    new Date(b.date).getTime() - new Date(a.date).getTime()
-  );
+  const allItems = [...writtenPosts, ...curatedReads].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
 
   const filteredItems = allItems.filter(item => {
-    const matchesTab = activeTab === 'all' ||
-      (activeTab === 'essays' && item.type === 'essay') ||
-      (activeTab === 'curation' && item.type === 'curation');
-
-    const matchesSearch = item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.tags.some(t => t.toLowerCase().includes(searchQuery.toLowerCase()));
-
-    return matchesTab && matchesSearch;
-  });
-
-  useEffect(() => {
-    const observerOptions = {
-      root: null,
-      rootMargin: '0px',
-      threshold: 0.15
-    }
-
-    const observer = new IntersectionObserver((entries, obs) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible')
-          obs.unobserve(entry.target)
-        }
-      })
-    }, observerOptions)
-
-    // Wait a tick for DOM to update with filtered items before observing
-    setTimeout(() => {
-      document.querySelectorAll('.fade-in-up').forEach(el => {
-        observer.observe(el)
-      })
-    }, 50)
-
-    return () => observer.disconnect()
-  }, [filteredItems])
+    const matchesTab = activeTab === 'all' || item.type === activeTab
+    const matchesSearch = item.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                          item.desc.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                          item.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))
+    return matchesTab && matchesSearch
+  })
 
   return (
-    <div className="w-full px-margin-safe pt-32 pb-element-gap relative min-h-screen">
+    <div className="min-h-screen pt-32 pb-24 px-margin-safe max-w-6xl mx-auto relative z-10">
       
-      <div className="mb-24 fade-in-up">
-        <h1 className="font-display-lg text-display-lg md:text-[80px] text-primary leading-none tracking-tighter mb-4">
-          THE DIGEST
+      {/* Header */}
+      <div className="mb-16 fade-in-up">
+        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-zinc-100 border border-zinc-200 text-[10px] font-label-caps text-zinc-800 mb-3 font-medium">
+          WRITTEN ARCHITECTURE &amp; RESEARCH
+        </span>
+        <h1 className="font-display-lg text-4xl sm:text-6xl text-zinc-950 tracking-tight font-normal mb-4">
+          The Engineering Digest
         </h1>
-        <p className="font-body-lg text-body-lg text-on-surface-variant max-w-lg">
-          Curated thoughts, technical essays, and industry insights. A hub for architectural exploration.
+        <p className="font-body-lg text-base sm:text-lg text-zinc-600 max-w-2xl font-light leading-relaxed">
+          Curated thoughts, technical case studies, and engineering essays on Shopify, AWS serverless systems, and operational automations.
         </p>
       </div>
 
       {/* Control Bar */}
-      <div className="flex flex-col md:flex-row gap-8 mb-16 fade-in-up">
-        <div className="flex gap-6 border-b border-outline-variant pb-2 flex-grow">
-          <button
-            onClick={() => setActiveTab('all')}
-            className={`font-label-caps text-label-caps pb-2 transition-colors ${activeTab === 'all' ? 'text-primary font-bold border-b-2 border-primary -mb-[3px]' : 'text-on-surface-variant hover:text-primary'}`}
-          >
-            ALL
-          </button>
-          <button
-            onClick={() => setActiveTab('essays')}
-            className={`font-label-caps text-label-caps pb-2 transition-colors ${activeTab === 'essays' ? 'text-primary font-bold border-b-2 border-primary -mb-[3px]' : 'text-on-surface-variant hover:text-primary'}`}
-          >
-            ESSAYS
-          </button>
-          <button
-            onClick={() => setActiveTab('curation')}
-            className={`font-label-caps text-label-caps pb-2 transition-colors ${activeTab === 'curation' ? 'text-primary font-bold border-b-2 border-primary -mb-[3px]' : 'text-on-surface-variant hover:text-primary'}`}
-          >
-            CURATION
-          </button>
+      <div className="flex flex-col md:flex-row gap-6 justify-between items-stretch md:items-center mb-12 fade-in-up">
+        {/* Filter Pills */}
+        <div className="flex gap-2">
+          {[
+            { id: 'all', label: 'All Entries' },
+            { id: 'essay', label: 'Essays & Case Studies' },
+            { id: 'curation', label: 'Curated Research' }
+          ].map(tab => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id as 'all' | 'essays' | 'curation')}
+              className={`px-4 py-2 font-label-caps text-xs rounded-full transition-all duration-200 ${
+                activeTab === tab.id
+                  ? 'bg-zinc-950 text-white font-medium shadow-sm'
+                  : 'bg-zinc-50 border border-zinc-200 text-zinc-600 hover:text-zinc-950 hover:border-zinc-300'
+              }`}
+            >
+              {tab.label}
+            </button>
+          ))}
         </div>
 
-        <div className="relative md:w-96">
-          <Search size={16} className="absolute left-0 top-1/2 -translate-y-1/2 text-outline" />
+        {/* Search Bar */}
+        <div className="relative md:w-80">
+          <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400" />
           <input
             type="text"
             placeholder="Search digest..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full bg-transparent border-b border-outline-variant pb-2 pl-8 font-body-sm text-body-sm text-primary focus:outline-none focus:border-primary transition-colors placeholder:text-outline"
+            className="w-full bg-white border border-zinc-200 rounded-full py-2 pl-10 pr-4 font-body-sm text-sm text-zinc-950 focus:outline-none focus:border-zinc-950 transition-colors shadow-sm placeholder:text-zinc-400"
           />
         </div>
       </div>
 
-      {/* Content Grid */}
-      <div className="flex flex-col gap-8 w-full mx-auto fade-in-up">
+      {/* Content Cards */}
+      <div className="flex flex-col gap-6 w-full mx-auto fade-in-up">
         {filteredItems.map((item) => (
-          <div key={item.id} className="bracket-border hover:bg-surface-container-low transition-colors duration-300">
-            <div className="flex flex-col md:flex-row justify-between items-start gap-8">
+          <SpotlightCard key={item.id} className="p-8 sm:p-10">
+            <div className="flex flex-col md:flex-row justify-between items-start gap-6">
               
               <div className="flex-1">
-                <div className="flex justify-between items-center mb-4">
-                  <div className="font-label-caps text-label-caps text-on-surface-variant">[{item.date}]</div>
-                  <div className="font-label-caps text-label-caps text-primary">
-                    {item.type.toUpperCase()}
-                  </div>
+                <div className="flex items-center gap-3 mb-3">
+                  <span className="font-label-caps text-xs text-zinc-400 font-semibold">[{item.date}]</span>
+                  <span className="font-label-caps text-[9px] px-2.5 py-0.5 rounded-full border border-zinc-200 bg-zinc-50 text-zinc-600 uppercase font-medium">
+                    {item.type}
+                  </span>
                 </div>
                 
-                <h3 className="font-body-lg text-[24px] text-primary mb-4 font-semibold leading-tight">{item.title}</h3>
-                <p className="font-body-sm text-body-sm text-on-surface-variant max-w-3xl mb-6">{item.desc}</p>
+                <h3 className="font-body-lg text-2xl text-zinc-950 mb-3 font-semibold leading-snug">
+                  {item.title}
+                </h3>
+                <p className="font-body-sm text-zinc-600 max-w-3xl mb-6 font-light leading-relaxed">
+                  {item.desc}
+                </p>
                 
-                <div className="flex gap-4 flex-wrap">
+                <div className="flex gap-2 flex-wrap">
                   {item.tags.map(tag => (
-                    <span key={tag} className="font-label-caps text-label-caps text-outline border border-outline px-2 py-1">
+                    <span key={tag} className="font-label-caps text-[10px] text-zinc-600 rounded-full border border-zinc-200 bg-zinc-50 px-3 py-1">
                       {tag}
                     </span>
                   ))}
                 </div>
               </div>
 
-              <div className="flex flex-col justify-end items-end h-full mt-4 md:mt-0">
+              <div className="flex flex-col justify-end items-end shrink-0 mt-4 md:mt-0">
                 {item.type === 'curation' ? (
-                  <a href={item.url} target="_blank" rel="noreferrer" className="font-label-caps text-label-caps text-primary border-b border-outline pb-1 hover:text-secondary hover:border-secondary transition-colors inline-flex items-center gap-2">
-                    VISIT SOURCE <ExternalLink size={14} />
+                  <a 
+                    href={item.url} 
+                    target="_blank" 
+                    rel="noreferrer" 
+                    className="font-label-caps text-xs text-zinc-950 hover:text-zinc-600 inline-flex items-center gap-1.5 font-semibold"
+                  >
+                    Visit Source <ExternalLink size={14} />
                   </a>
                 ) : (
-                  <Link to={item.url as string} className="font-label-caps text-label-caps text-primary border-b border-outline pb-1 hover:text-secondary hover:border-secondary transition-colors inline-flex items-center gap-2">
-                    READ <ArrowRight size={14} />
+                  <Link 
+                    to={item.url as string} 
+                    className="font-label-caps text-xs text-zinc-950 hover:text-zinc-600 inline-flex items-center gap-1.5 font-semibold"
+                  >
+                    Read Essay <ArrowRight size={14} />
                   </Link>
                 )}
               </div>
               
             </div>
-          </div>
+          </SpotlightCard>
         ))}
         
         {filteredItems.length === 0 && (
-          <div className="py-16 text-center text-on-surface-variant font-body-sm">
-            No entries found matching your query.
+          <div className="py-20 text-center text-zinc-500 font-body-sm bg-zinc-50 rounded-3xl border border-zinc-200">
+            No entries found matching your search.
           </div>
         )}
       </div>
 
     </div>
-  );
-};
+  )
+}
 
-export default ReadsPage;
+export default ReadsPage
