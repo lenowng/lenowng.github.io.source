@@ -7,25 +7,31 @@ const Hero3DCanvas = () => {
     const canvas = canvasRef.current
     if (!canvas) return
 
-    const ctx = canvas.getContext('2d')
+    const ctx = canvas.getContext('2d', { alpha: true })
     if (!ctx) return
 
     let animationFrameId: number
-    let width = (canvas.width = canvas.clientWidth || window.innerWidth)
-    let height = (canvas.height = canvas.clientHeight || window.innerHeight)
+    let dpr = Math.min(window.devicePixelRatio || 1, 2)
+    let cssWidth = canvas.clientWidth || window.innerWidth
+    let cssHeight = canvas.clientHeight || window.innerHeight
+    let width = (canvas.width = cssWidth * dpr)
+    let height = (canvas.height = cssHeight * dpr)
 
     const handleResize = () => {
       if (!canvas) return
-      width = canvas.width = canvas.clientWidth || window.innerWidth
-      height = canvas.height = canvas.clientHeight || window.innerHeight
+      dpr = Math.min(window.devicePixelRatio || 1, 2)
+      cssWidth = canvas.clientWidth || window.innerWidth
+      cssHeight = canvas.clientHeight || window.innerHeight
+      width = canvas.width = cssWidth * dpr
+      height = canvas.height = cssHeight * dpr
     }
     window.addEventListener('resize', handleResize)
 
-    // Smooth cursor physics
-    let mouseX = width * 0.65
-    let mouseY = height * 0.4
-    let targetMouseX = width * 0.65
-    let targetMouseY = height * 0.4
+    // Smooth cursor physics (slow, weighted lag for calm fluidity)
+    let targetMouseX = cssWidth * 0.5
+    let targetMouseY = cssHeight * 0.5
+    let mouseX = cssWidth * 0.5
+    let mouseY = cssHeight * 0.5
     let velocityX = 0
     let velocityY = 0
 
@@ -36,7 +42,7 @@ const Hero3DCanvas = () => {
     }
     window.addEventListener('mousemove', handleMouseMove)
 
-    // Scroll depth tracking
+    // Scroll depth tracking with smooth damping
     let scrollY = window.scrollY
     let targetScrollY = window.scrollY
     const handleScroll = () => {
@@ -47,71 +53,77 @@ const Hero3DCanvas = () => {
     let time = 0
 
     const render = () => {
-      time += 0.008
+      // Slow, hypnotic, serene time step
+      time += 0.0032
       ctx.clearRect(0, 0, width, height)
 
-      // Spring physics interpolation
+      ctx.save()
+      ctx.scale(dpr, dpr)
+
+      // Spring physics interpolation for cursor movement
       const prevMouseX = mouseX
       const prevMouseY = mouseY
-      mouseX += (targetMouseX - mouseX) * 0.03
-      mouseY += (targetMouseY - mouseY) * 0.03
-      velocityX = (mouseX - prevMouseX) * 0.6
-      velocityY = (mouseY - prevMouseY) * 0.6
+      mouseX += (targetMouseX - mouseX) * 0.035
+      mouseY += (targetMouseY - mouseY) * 0.035
+      velocityX = (mouseX - prevMouseX) * 0.5
+      velocityY = (mouseY - prevMouseY) * 0.5
       scrollY += (targetScrollY - scrollY) * 0.04
 
-      const speedMagnitude = Math.min(Math.sqrt(velocityX * velocityX + velocityY * velocityY), 20)
-      const scrollOffset = scrollY * 0.12
+      const speedMagnitude = Math.min(Math.sqrt(velocityX * velocityX + velocityY * velocityY), 12)
+      const scrollOffset = scrollY * 0.16
 
-      // Pure Minimalist Monochromatic 3D Kinetic Ribbons (Graphite/Ink on Crisp Canvas)
-      const numRibbons = 8
-      const numSegments = 60
-      const centerX = width * 0.65
-      const centerY = height * 0.45 - scrollOffset * 0.25
+      // Zoomed-in expansive 3D kinetic fluid motion lines spanning full vertical height
+      const numLines = 26
+      const numSegments = 120
+      const centerX = cssWidth * 0.5
+      const centerY = cssHeight * 0.50 - scrollOffset * 0.28
+      const spanWidth = cssWidth * 1.5
 
-      for (let r = 0; r < numRibbons; r++) {
-        const ribbonPhase = r * 0.45
-        const baseThickness = 1.6 - r * 0.15
+      for (let r = 0; r < numLines; r++) {
+        const linePhase = (r / numLines) * Math.PI * 2
+        const depthOffset = (r - numLines / 2) * 32
+        const verticalSpread = (r - numLines * 0.5) * (cssHeight * 0.026)
 
         ctx.beginPath()
-
         const ribbonPoints: { x: number; y: number }[] = []
 
         for (let i = 0; i <= numSegments; i++) {
           const t = i / numSegments
-          
-          // Harmonic 3D Parametric Wave Equations
-          const theta = t * Math.PI * 3.0 + time * 0.3 + ribbonPhase
-          const phi = t * Math.PI * 2.0 + time * 0.2 + (scrollY * 0.0015)
-          
-          const radiusX = 260 + Math.sin(time * 0.5 + t * 4.0 + ribbonPhase) * 55
-          const radiusY = 150 + Math.cos(time * 0.4 + t * 3.0) * 45
-          const radiusZ = 180 + Math.sin(theta) * 50
 
-          // 3D Coordinates
-          let x3d = Math.cos(theta) * radiusX + (t - 0.5) * 440
-          let y3d = Math.sin(theta * 1.3 + phi) * radiusY + Math.sin(t * Math.PI * 2) * 55
-          const z3d = Math.sin(theta) * radiusZ
+          // Harmonic 3D Parametric Wave Equations with enlarged vertical amplitude
+          const theta = t * Math.PI * 2.6 + time * 0.28 + linePhase * 0.75
+          const phi = t * Math.PI * 1.6 + time * 0.20 + (scrollY * 0.0008)
 
-          // Interactive fluid turbulence from cursor
-          const dx = mouseX - (centerX + x3d * 0.55)
-          const dy = mouseY - (centerY + y3d * 0.55)
+          const radiusX = 120 + Math.sin(time * 0.35 + t * 2.5 + linePhase) * 55
+          // Zoomed-in vertical amplitude covering high and low sections of the hero
+          const radiusY = cssHeight * 0.36 + Math.cos(time * 0.25 + t * 2.2 + linePhase * 0.5) * (cssHeight * 0.08)
+          const radiusZ = 210 + Math.sin(theta) * 65
+
+          // 3D coordinates spanning generously across width and height
+          let x3d = (t - 0.5) * spanWidth + Math.cos(theta) * radiusX
+          let y3d = Math.sin(theta * 1.15 + phi) * radiusY + Math.sin(t * Math.PI * 2) * (cssHeight * 0.10) + verticalSpread
+          const z3d = Math.sin(theta) * radiusZ + depthOffset
+
+          // Subtle, calm fluid reaction to cursor proximity
+          const dx = mouseX - (centerX + x3d * 0.65)
+          const dy = mouseY - (centerY + y3d * 0.65)
           const distToCursor = Math.sqrt(dx * dx + dy * dy)
-          const cursorInfluence = Math.max(0, 1 - distToCursor / 400) * (35 + speedMagnitude * 1.8)
+          const cursorInfluence = Math.max(0, 1 - distToCursor / 460) * (28 + speedMagnitude * 1.1)
 
           x3d += (dx / (distToCursor + 1)) * cursorInfluence * Math.sin(t * Math.PI)
           y3d += (dy / (distToCursor + 1)) * cursorInfluence * Math.sin(t * Math.PI)
 
-          // 3D Perspective Projection
-          const fov = 520
-          const perspective = fov / (fov + z3d + 240)
-          
+          // 3D Perspective Projection (zoomed-in perspective)
+          const fov = 750
+          const perspective = fov / (fov + z3d + 220)
+
           const projX = centerX + x3d * perspective
           const projY = centerY + y3d * perspective
 
           ribbonPoints.push({ x: projX, y: projY })
         }
 
-        // Draw Spline Ribbon with smooth curves
+        // Draw Spline with smooth quadratic curves
         if (ribbonPoints.length > 0) {
           ctx.moveTo(ribbonPoints[0].x, ribbonPoints[0].y)
           for (let i = 1; i < ribbonPoints.length - 1; i++) {
@@ -119,20 +131,29 @@ const Hero3DCanvas = () => {
             const yc = (ribbonPoints[i].y + ribbonPoints[i + 1].y) / 2
             ctx.quadraticCurveTo(ribbonPoints[i].x, ribbonPoints[i].y, xc, yc)
           }
+          if (ribbonPoints.length > 1) {
+            const last = ribbonPoints[ribbonPoints.length - 1]
+            ctx.lineTo(last.x, last.y)
+          }
         }
 
-        // Pure Monochrome Graphite / Ink Gradient Stroke
-        const alpha = Math.max(0.04, 0.18 - r * 0.018)
+        // Delicate hairline stroke with subtle monochromatic opacity gradient
+        const normalizedIdx = r / numLines
+        const alphaCurve = Math.sin(normalizedIdx * Math.PI)
+        const alpha = Math.max(0.02, 0.03 + alphaCurve * 0.075)
+        const baseThickness = 0.7 + (r % 5 === 0 ? 0.35 : 0)
+
         ctx.strokeStyle = `rgba(9, 9, 11, ${alpha})`
-        ctx.lineWidth = Math.max(0.8, baseThickness)
+        ctx.lineWidth = baseThickness
         ctx.lineCap = 'round'
         ctx.stroke()
       }
 
+      ctx.restore()
       animationFrameId = requestAnimationFrame(render)
     }
 
-    render()
+    animationFrameId = requestAnimationFrame(render)
 
     return () => {
       window.removeEventListener('resize', handleResize)

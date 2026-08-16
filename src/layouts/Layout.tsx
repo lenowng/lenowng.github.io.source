@@ -27,7 +27,7 @@ const Layout = () => {
           <div className="flex items-center gap-4">
             <BrandLogo 
               size="md" 
-              showIcon={true}
+              showIcon={false}
               onClick={() => {
                 if (location.pathname !== '/') navigate('/')
                 else window.scrollTo({ top: 0, behavior: 'smooth' })
