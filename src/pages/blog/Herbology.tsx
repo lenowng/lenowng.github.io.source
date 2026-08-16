@@ -45,7 +45,7 @@ x-data="{
 
       </div>
 
-      <p>We proved that even "traditional" Liquid themes can compete with Headless if engineered correctly.</p>
+      <p>We proved that cleanly engineered Liquid themes deliver sub-second mobile performance without unnecessary complexity.</p>
     </BlogPostLayout>
   );
 };

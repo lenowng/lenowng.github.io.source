@@ -31,12 +31,12 @@ const ReadsPage = () => {
     {
       id: 'log_003',
       date: '2025-12-20',
-      title: 'Migrating to Hydrogen: A Practical Guide',
-      desc: 'Lessons learned moving a high-volume store to headless. Performance wins, SEO challenges, and the reality of React Server Components.',
-      tags: ['Hydrogen', 'React', 'Case Study'],
+      title: 'Building Store-Tailored Shopify Apps',
+      desc: 'Extending Shopify Admin and POS workflows with custom embedded apps and webhooks instead of generic third-party app bloat.',
+      tags: ['Shopify', 'Node.js', 'Case Study'],
       type: 'essay',
-      readTime: '15 min read',
-      url: '/blog/hydrogen-migration'
+      readTime: '12 min read',
+      url: '/blog/custom-shopify-apps'
     },
     {
       id: 'log_001',

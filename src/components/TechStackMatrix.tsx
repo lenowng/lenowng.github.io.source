@@ -1,45 +1,51 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Cpu, Server, ShoppingBag, Terminal } from 'lucide-react'
+import { Cpu, Server, ShoppingBag, Terminal, Database } from 'lucide-react'
 
 interface TechItem {
   name: string
-  category: 'frontend' | 'backend' | 'cloud' | 'shopify' | 'automation'
+  category: 'commerce' | 'cloud' | 'database' | 'automation' | 'frontend'
   level: string
   description: string
 }
 
 const techItems: TechItem[] = [
-  // Languages & Frontend
-  { name: 'TypeScript / JS', category: 'frontend', level: 'Core', description: 'Strong typing, modern ECMAScript features, clean modular code.' },
-  { name: 'React / Next.js', category: 'frontend', level: 'Core', description: 'Server components, custom hooks, SSR/SSG, and responsive state management.' },
-  { name: 'Tailwind CSS', category: 'frontend', level: 'Core', description: 'Design tokens, mobile-first responsive layouts, and utility styling.' },
-  { name: 'Framer Motion', category: 'frontend', level: 'Core', description: 'Physics animations, layout transitions, and interactive UI polish.' },
-  
-  // Backend & Cloud
-  { name: 'AWS Lambda & Gateway', category: 'cloud', level: 'Cloud', description: 'Serverless functions, REST/GraphQL endpoints, and auto-scaling backends.' },
-  { name: 'DynamoDB / NoSQL', category: 'cloud', level: 'Cloud', description: 'Single-table schema design, high-throughput indexes, and Dynamoose modeling.' },
-  { name: 'Hono / Node.js', category: 'backend', level: 'Backend', description: 'Fast edge web framework for lightweight, low-latency microservices.' },
-  { name: 'AWS SQS & EventBridge', category: 'cloud', level: 'Cloud', description: 'Asynchronous queue processing, retry mechanisms, and event-driven architecture.' },
-  
-  // Shopify & Commerce
-  { name: 'Shopify Liquid', category: 'shopify', level: 'Commerce', description: 'Custom theme development, section architecture, and Core Web Vitals optimization.' },
-  { name: 'Hydrogen & Oxygen', category: 'shopify', level: 'Commerce', description: 'Headless React storefronts on Shopify edge infrastructure.' },
-  { name: 'Shopify Admin API (GraphQL)', category: 'shopify', level: 'Commerce', description: 'App development, metafield automation, and order lifecycle tags.' },
-  { name: 'POS UI Extensions', category: 'shopify', level: 'Commerce', description: 'Custom point-of-sale checkout workflows for retail stores.' },
+  // Commerce & Apps
+  { name: 'Shopify Liquid 2.0', category: 'commerce', level: 'Commerce', description: 'Modular theme sections, JSON templates, and mobile Core Web Vitals optimization.' },
+  { name: 'Custom Shopify Apps', category: 'commerce', level: 'Commerce', description: 'Embedded Admin apps (React / Polaris) tailored to specific merchant workflows.' },
+  { name: 'Shopify Admin API (GraphQL)', category: 'commerce', level: 'Commerce', description: 'Metafield automation, order tag pipelines, and inventory synchronization.' },
+  { name: 'POS UI Extensions', category: 'commerce', level: 'Commerce', description: 'Custom retail point-of-sale checkout workflows and in-store operations.' },
 
-  // Automation
-  { name: 'Groovy / Jira Automation', category: 'automation', level: 'Automation', description: 'ScriptRunner scripts and automated workflow rules for Jira.' },
-  { name: 'Webhook Pipelines', category: 'automation', level: 'Automation', description: 'Real-time data synchronization between Shopify, CRMs, and databases.' },
-  { name: 'Serverless Framework', category: 'cloud', level: 'DevOps', description: 'Infrastructure as code for reproducible AWS deployments.' }
+  // Cloud & Backend
+  { name: 'AWS Lambda & Gateway', category: 'cloud', level: 'Cloud', description: 'Auto-scaling serverless microservices and low-latency REST/GraphQL APIs.' },
+  { name: 'Hono / Node.js', category: 'cloud', level: 'Backend', description: 'Lightweight, ultra-fast edge web framework for microservices and webhook handlers.' },
+  { name: 'Serverless Framework', category: 'cloud', level: 'DevOps', description: 'Infrastructure as code for reliable, reproducible AWS deployments.' },
+
+  // Databases & Queues
+  { name: 'DynamoDB (Single-Table)', category: 'database', level: 'Database', description: 'High-throughput NoSQL modeling, secondary indexes, and Dynamoose integration.' },
+  { name: 'AWS SQS & EventBridge', category: 'database', level: 'Queues', description: 'Asynchronous message queues, dead-letter retries, and event-driven architecture.' },
+  { name: 'PostgreSQL', category: 'database', level: 'Database', description: 'Relational data modeling, ACID transactions, and structured query optimization.' },
+
+  // Automation & Tooling
+  { name: 'Google Apps Script', category: 'automation', level: 'Automation', description: 'Automated Google Sheets data pipelines, custom Workspace triggers, and REST connectors.' },
+  { name: 'Webhook Pipelines', category: 'automation', level: 'Automation', description: 'Idempotent real-time sync between Shopify, ERPs, CRMs, and databases.' },
+  { name: 'Groovy / Jira ScriptRunner', category: 'automation', level: 'Automation', description: 'Custom business logic scripts, listeners, and workflow transitions in Jira.' },
+  { name: 'GitHub Actions CI/CD', category: 'automation', level: 'DevOps', description: 'Automated type checking, production build verification, and edge CDN deployment.' },
+
+  // Frontend & UI
+  { name: 'TypeScript / Modern JS', category: 'frontend', level: 'Frontend', description: 'Strict typing, modern ECMAScript standards, and maintainable modular architecture.' },
+  { name: 'React / Next.js', category: 'frontend', level: 'Frontend', description: 'Server components, custom hooks, SSR/SSG, and responsive client state.' },
+  { name: 'Tailwind CSS', category: 'frontend', level: 'Frontend', description: 'Mobile-first utility architecture, design tokens, and lightweight purged CSS payloads.' },
+  { name: 'Framer Motion', category: 'frontend', level: 'Frontend', description: 'Physics animations, layout transitions, and interactive UI micro-interactions.' }
 ]
 
 const categories = [
   { key: 'all', label: 'All Stack', icon: Cpu },
-  { key: 'shopify', label: 'E-Commerce', icon: ShoppingBag },
-  { key: 'cloud', label: 'Cloud Systems', icon: Server },
-  { key: 'automation', label: 'Automations', icon: Terminal },
-  { key: 'frontend', label: 'Web & UI', icon: Cpu },
+  { key: 'commerce', label: 'Commerce & Apps', icon: ShoppingBag },
+  { key: 'cloud', label: 'Cloud & Backend', icon: Server },
+  { key: 'database', label: 'Databases & Queues', icon: Database },
+  { key: 'automation', label: 'Automation & Tooling', icon: Terminal },
+  { key: 'frontend', label: 'Frontend & UI', icon: Cpu },
 ]
 
 const TechStackMatrix = () => {
@@ -51,7 +57,7 @@ const TechStackMatrix = () => {
 
   return (
     <div className="w-full">
-      {/* Category Pills */}
+      {/* Category Filter Pills */}
       <div className="flex overflow-x-auto no-scrollbar gap-2 mb-6 sm:mb-8 pb-1 sm:pb-0 -mx-5 px-5 sm:mx-0 sm:px-0">
         {categories.map((cat) => {
           const Icon = cat.icon

@@ -29,7 +29,7 @@ Professional portfolio and agency website for **Nightr.dev**, specializing in hi
 
 ### C. Services "Clusters"
 - Modular display of services:
-  - Commerce Architecture (Shopify Headless/Liquid).
+  - Commerce Architecture (Shopify Themes / Custom Apps).
   - Workflow Engineering (Apps Script/Bespoke APIs).
   - Infrastructure (AWS Scalability/Security).
 

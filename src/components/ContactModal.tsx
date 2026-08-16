@@ -9,11 +9,11 @@ interface ContactModalProps {
 }
 
 const serviceTags = [
-  'Shopify Storefronts',
+  'Shopify Themes & Apps',
   'AWS Serverless Backends',
   'Workflow Automation',
-  'Custom Web Apps',
-  'Code & Speed Audit'
+  'Custom Web Applications',
+  'Store Audit & Speed Tuning'
 ]
 
 const budgetRanges = [

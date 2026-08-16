@@ -61,10 +61,10 @@ const HomePage = () => {
       link: "/blog/architecture-deep-dive"
     },
     {
-      title: "Shopify at Scale: Hydrogen Migration",
+      title: "Building Store-Tailored Shopify Apps",
       date: "2024-01-15",
-      tldr: "Migrating a $50M/yr brand from Liquid to Headless Hydrogen.",
-      link: "/blog/hydrogen-migration"
+      tldr: "Extending Shopify Admin and POS workflows with custom embedded apps and webhooks.",
+      link: "/blog/custom-shopify-apps"
     },
     {
       title: "Automating the Mundane",
@@ -75,11 +75,54 @@ const HomePage = () => {
   ]
 
   const clientLogos = [
-    { label: "HERBOLOGY", name: "Shopify Storefront Overhaul" },
-    { label: "SHOPIFY PLUS", name: "Liquid & Checkout Customizations" },
-    { label: "AWS SERVERLESS", name: "Lambda, DynamoDB & SQS Systems" },
-    { label: "HYDROGEN & REACT", name: "Headless Storefront Engineering" },
-    { label: "ATLASSIAN JIRA", name: "ScriptRunner Workflow Automation" }
+    { label: "SHOPIFY THEMES", name: "Liquid 2.0 & Speed Optimization" },
+    { label: "CUSTOM SHOPIFY APPS", name: "Embedded Admin Apps & POS" },
+    { label: "AWS SERVERLESS", name: "Lambda, DynamoDB & SQS Queues" },
+    { label: "OPERATIONS AUTOMATION", name: "Webhooks & Jira ScriptRunner" },
+    { label: "FULL-STACK WEB", name: "React, Next.js, Hono & TypeScript" }
+  ]
+
+  const caseStudies = [
+    {
+      year: "2025",
+      category: "CLEAN BEAUTY STOREFRONT",
+      title: "Herbology.com.my Storefront Refactor",
+      description: "Full theme rebuild for a clean beauty brand featuring modular Liquid sections, direct Recharge subscription integration, and 90+ mobile performance.",
+      badge: "90+ Mobile Speed",
+      subBadge: "Liquid / Tailwind",
+      link: "https://herbology.com.my/",
+      isExternal: true
+    },
+    {
+      year: "2025",
+      category: "OPERATIONS AUTOMATION",
+      title: "Shopify Order Rescheduling App",
+      description: "An embedded Shopify Admin app that lets merchant support teams reschedule order delivery dates with an interactive modal calendar and automated tag updates.",
+      badge: "Automated Tagging",
+      subBadge: "Shopify GraphQL",
+      link: null,
+      isExternal: false
+    },
+    {
+      year: "2024",
+      category: "RETAIL & POS WORKFLOWS",
+      title: "Custom Shopify POS UI Extensions",
+      description: "Tailored POS UI extensions and backend integrations enabling in-store staff to manage custom delivery tags and inventory hold workflows directly at checkout.",
+      badge: "POS Extensions",
+      subBadge: "Shopify POS / Node.js",
+      link: null,
+      isExternal: false
+    },
+    {
+      year: "2023",
+      category: "CLOUD AUTOMATION",
+      title: "Automated Logistics Email Parser & ERP Sync",
+      description: "Serverless AWS pipeline using SES, S3, and Lambda to ingest supplier tracking emails and automatically update ERP orders without human data entry.",
+      badge: "40 hrs/wk Saved",
+      subBadge: "AWS Lambda & SES",
+      link: "/blog/automation",
+      isExternal: false
+    }
   ]
 
   return (
@@ -118,7 +161,7 @@ const HomePage = () => {
           </motion.h1>
 
           <motion.p variants={itemVariants} className="font-body-lg text-sm sm:text-base md:text-lg text-zinc-600 max-w-2xl mb-8 sm:mb-12 leading-relaxed font-light">
-            I build fast <strong className="text-zinc-950 font-normal">Shopify storefronts</strong>, scalable <strong className="text-zinc-950 font-normal">AWS serverless backends</strong>, and custom <strong className="text-zinc-950 font-normal">automation workflows</strong> that eliminate manual work.
+            I help growing brands automate operations, build fast <strong className="text-zinc-950 font-normal">Shopify stores &amp; custom apps</strong>, and deploy resilient <strong className="text-zinc-950 font-normal">AWS serverless backends</strong> that eliminate manual work.
           </motion.p>
 
           {/* Action Buttons */}
@@ -129,7 +172,7 @@ const HomePage = () => {
               onClick={() => handleOpenContact()}
               className="font-label-caps text-xs text-white bg-zinc-950 px-6 sm:px-8 py-4 rounded-2xl sm:rounded-full hover:bg-zinc-800 transition-all inline-flex items-center justify-center gap-2.5 font-medium shadow-sm active:scale-[0.98]"
             >
-              Get in Touch <ArrowRight size={14} />
+              Start a Project <ArrowRight size={14} />
             </motion.button>
 
             <motion.a
@@ -188,30 +231,30 @@ const HomePage = () => {
                 Engineering for commerce, cloud systems, and operations automation.
               </h2>
               <p className="mt-3 sm:mt-4 text-sm sm:text-base text-zinc-600 font-light leading-relaxed">
-                I help brands speed up storefronts, reduce cloud costs, and replace manual spreadsheets with reliable background systems.
+                I help brands speed up storefronts, reduce cloud costs, and replace manual data entry with reliable background systems.
               </p>
             </div>
 
             {/* 4 Core Service Pillars */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 mb-12 sm:mb-16 fade-in-up">
               
-              {/* Item 1: Shopify */}
+              {/* Item 1: Shopify Themes & Custom Apps */}
               <div className="p-6 sm:p-8 rounded-2xl sm:rounded-3xl bg-zinc-50 border border-zinc-200 relative pt-8 sm:pt-10 before:absolute before:top-0 before:left-6 sm:before:left-8 before:h-0.5 before:w-8 before:bg-zinc-950 after:absolute after:top-0 after:left-14 sm:after:left-16 after:right-6 sm:after:right-8 after:h-px after:bg-zinc-200">
                 <div className="flex items-center gap-3 mb-3">
                   <ShoppingBag size={20} className="text-zinc-950 shrink-0" />
                   <h3 className="font-body-lg text-lg sm:text-xl font-semibold text-zinc-950 leading-snug">
-                    Shopify &amp; Headless Commerce
+                    Shopify Themes &amp; Custom Store Apps
                   </h3>
                 </div>
                 <p className="font-body-sm text-xs sm:text-sm text-zinc-600 leading-relaxed font-light mb-4">
-                  Custom Liquid theme development, headless Hydrogen storefronts, custom admin apps, and checkout optimizations focused on sub-second load times and higher conversions.
+                  Custom Liquid 2.0 theme development, modular section architecture, store-tailored custom Shopify apps, POS UI extensions, and checkout optimizations focused on sub-second load times.
                 </p>
                 <div className="font-label-caps text-[10px] text-zinc-400 uppercase">
-                  LIQUID / HYDROGEN / ADMIN GRAPHQL
+                  LIQUID / ADMIN GRAPHQL / POS EXTENSIONS
                 </div>
               </div>
 
-              {/* Item 2: AWS Cloud */}
+              {/* Item 2: AWS Serverless Cloud Architecture */}
               <div className="p-6 sm:p-8 rounded-2xl sm:rounded-3xl bg-zinc-50 border border-zinc-200 relative pt-8 sm:pt-10 before:absolute before:top-0 before:left-6 sm:before:left-8 before:h-0.5 before:w-8 before:bg-zinc-950 after:absolute after:top-0 after:left-14 sm:after:left-16 after:right-6 sm:after:right-8 after:h-px after:bg-zinc-200">
                 <div className="flex items-center gap-3 mb-3">
                   <Server size={20} className="text-zinc-950 shrink-0" />
@@ -220,14 +263,14 @@ const HomePage = () => {
                   </h3>
                 </div>
                 <p className="font-body-sm text-xs sm:text-sm text-zinc-600 leading-relaxed font-light mb-4">
-                  Cost-effective cloud backends using AWS Lambda, API Gateway, DynamoDB, and SQS queues that scale on demand during traffic spikes without idling server bills.
+                  Cost-effective cloud backends using AWS Lambda, API Gateway, DynamoDB single-table design, and SQS queues that scale on demand during traffic spikes without idling server bills.
                 </p>
                 <div className="font-label-caps text-[10px] text-zinc-400 uppercase">
-                  LAMBDA / DYNAMODB / SQS
+                  LAMBDA / DYNAMODB / SQS / EVENTBRIDGE
                 </div>
               </div>
 
-              {/* Item 3: Automation */}
+              {/* Item 3: Workflow & Operations Automation */}
               <div className="p-6 sm:p-8 rounded-2xl sm:rounded-3xl bg-zinc-50 border border-zinc-200 relative pt-8 sm:pt-10 before:absolute before:top-0 before:left-6 sm:before:left-8 before:h-0.5 before:w-8 before:bg-zinc-950 after:absolute after:top-0 after:left-14 sm:after:left-16 after:right-6 sm:after:right-8 after:h-px after:bg-zinc-200">
                 <div className="flex items-center gap-3 mb-3">
                   <Zap size={20} className="text-zinc-950 shrink-0" />
@@ -236,14 +279,14 @@ const HomePage = () => {
                   </h3>
                 </div>
                 <p className="font-body-sm text-xs sm:text-sm text-zinc-600 leading-relaxed font-light mb-4">
-                  Connecting fragmented tools with webhook handlers, automated inventory syncing, order management apps, and custom ScriptRunner scripts for Jira.
+                  Connecting fragmented business platforms with Google Apps Script data pipelines, idempotent webhook handlers, automated order tagging, and custom Jira ScriptRunner Groovy automation.
                 </p>
                 <div className="font-label-caps text-[10px] text-zinc-400 uppercase">
-                  WEBHOOKS / DATA SYNC / GROOVY
+                  APPS SCRIPT / WEBHOOKS / GROOVY / JIRA
                 </div>
               </div>
 
-              {/* Item 4: Web Apps */}
+              {/* Item 4: Custom Full-Stack Web Applications */}
               <div className="p-6 sm:p-8 rounded-2xl sm:rounded-3xl bg-zinc-50 border border-zinc-200 relative pt-8 sm:pt-10 before:absolute before:top-0 before:left-6 sm:before:left-8 before:h-0.5 before:w-8 before:bg-zinc-950 after:absolute after:top-0 after:left-14 sm:after:left-16 after:right-6 sm:after:right-8 after:h-px after:bg-zinc-200">
                 <div className="flex items-center gap-3 mb-3">
                   <Code size={20} className="text-zinc-950 shrink-0" />
@@ -252,7 +295,7 @@ const HomePage = () => {
                   </h3>
                 </div>
                 <p className="font-body-sm text-xs sm:text-sm text-zinc-600 leading-relaxed font-light mb-4">
-                  Internal tools, merchant dashboards, and lightweight full-stack web apps built with React, Next.js, Hono, and TypeScript.
+                  Internal operations tools, merchant management consoles, and lightweight full-stack web applications built with React, Next.js, Hono, Node.js, and TypeScript.
                 </p>
                 <div className="font-label-caps text-[10px] text-zinc-400 uppercase">
                   REACT / NEXT.JS / HONO / TYPESCRIPT
@@ -282,85 +325,49 @@ const HomePage = () => {
               </h2>
             </div>
             
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8 fade-in-up">
-              
-              {/* Case Study 1 */}
-              <SpotlightCard className="p-6 sm:p-8 flex flex-col justify-between">
-                <div>
-                  <div className="flex items-center gap-2 text-xs font-label-caps text-zinc-400 mb-4 sm:mb-6">
-                    <span className="font-bold text-zinc-950">2025</span>
-                    <span>/</span>
-                    <span className="text-zinc-600 font-medium">SHOPIFY &amp; AUTOMATION</span>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 fade-in-up">
+              {caseStudies.map((cs, idx) => (
+                <SpotlightCard key={idx} className="p-6 sm:p-8 flex flex-col justify-between">
+                  <div>
+                    <div className="flex items-center gap-2 text-xs font-label-caps text-zinc-400 mb-4 sm:mb-6">
+                      <span className="font-bold text-zinc-950">{cs.year}</span>
+                      <span>/</span>
+                      <span className="text-zinc-600 font-medium">{cs.category}</span>
+                    </div>
+                    <h3 className="font-headline-md text-xl sm:text-2xl font-semibold text-zinc-950 mb-3 sm:mb-4 leading-snug">
+                      {cs.title}
+                    </h3>
+                    <p className="font-body-sm text-xs sm:text-sm text-zinc-600 font-light leading-relaxed mb-6">
+                      {cs.description}
+                    </p>
                   </div>
-                  <h3 className="font-headline-md text-xl sm:text-2xl font-semibold text-zinc-950 mb-3 sm:mb-4 leading-snug">
-                    Shopify Order Rescheduling App
-                  </h3>
-                  <p className="font-body-sm text-xs sm:text-sm text-zinc-600 font-light leading-relaxed mb-6">
-                    An embedded Shopify Admin app that lets support teams reschedule order delivery dates with an interactive modal calendar and automated tag updates.
-                  </p>
-                </div>
 
-                <div className="pt-6 border-t border-zinc-100 flex items-center justify-between">
-                  <div className="text-[11px] sm:text-xs font-label-caps text-zinc-950 font-semibold bg-zinc-100 px-3 py-1 rounded-full border border-zinc-200">
-                    Automated Tagging
+                  <div className="pt-6 border-t border-zinc-100 flex items-center justify-between">
+                    {cs.link && cs.isExternal ? (
+                      <a 
+                        href={cs.link} 
+                        target="_blank" 
+                        rel="noreferrer" 
+                        className="text-[11px] sm:text-xs font-label-caps text-zinc-950 hover:text-zinc-600 font-semibold inline-flex items-center gap-1 active:scale-95 transition-transform"
+                      >
+                        View Live Store <ArrowUpRight size={14} />
+                      </a>
+                    ) : cs.link ? (
+                      <Link 
+                        to={cs.link}
+                        className="text-[11px] sm:text-xs font-label-caps text-zinc-950 hover:text-zinc-600 font-semibold inline-flex items-center gap-1 active:scale-95 transition-transform"
+                      >
+                        Read Case Study <ArrowRight size={14} />
+                      </Link>
+                    ) : (
+                      <div className="text-[11px] sm:text-xs font-label-caps text-zinc-950 font-semibold bg-zinc-100 px-3 py-1 rounded-full border border-zinc-200">
+                        {cs.badge}
+                      </div>
+                    )}
+                    <span className="text-[11px] sm:text-xs font-label-caps text-zinc-400">{cs.subBadge}</span>
                   </div>
-                  <span className="text-[11px] sm:text-xs font-label-caps text-zinc-400">Shopify GraphQL</span>
-                </div>
-              </SpotlightCard>
-
-              {/* Case Study 2 */}
-              <SpotlightCard className="p-6 sm:p-8 flex flex-col justify-between">
-                <div>
-                  <div className="flex items-center gap-2 text-xs font-label-caps text-zinc-400 mb-4 sm:mb-6">
-                    <span className="font-bold text-zinc-950">2025</span>
-                    <span>/</span>
-                    <span className="text-zinc-600 font-medium">CLEAN BEAUTY STOREFRONT</span>
-                  </div>
-                  <h3 className="font-headline-md text-xl sm:text-2xl font-semibold text-zinc-950 mb-3 sm:mb-4 leading-snug">
-                    Herbology.com.my Storefront Refactor
-                  </h3>
-                  <p className="font-body-sm text-xs sm:text-sm text-zinc-600 font-light leading-relaxed mb-6">
-                    Full theme rebuild for a clean beauty brand featuring modular Liquid sections, subscription cart logic, and mobile performance tuning.
-                  </p>
-                </div>
-
-                <div className="pt-6 border-t border-zinc-100 flex items-center justify-between">
-                  <a 
-                    href="https://herbology.com.my/" 
-                    target="_blank" 
-                    rel="noreferrer" 
-                    className="text-[11px] sm:text-xs font-label-caps text-zinc-950 hover:text-zinc-600 font-semibold inline-flex items-center gap-1 active:scale-95 transition-transform"
-                  >
-                    View Live Store <ArrowUpRight size={14} />
-                  </a>
-                  <span className="text-[11px] sm:text-xs font-label-caps text-zinc-400">Liquid / Tailwind</span>
-                </div>
-              </SpotlightCard>
-
-              {/* Case Study 3 */}
-              <SpotlightCard className="p-6 sm:p-8 flex flex-col justify-between">
-                <div>
-                  <div className="flex items-center gap-2 text-xs font-label-caps text-zinc-400 mb-4 sm:mb-6">
-                    <span className="font-bold text-zinc-950">2024</span>
-                    <span>/</span>
-                    <span className="text-zinc-600 font-medium">HEADLESS COMMERCE</span>
-                  </div>
-                  <h3 className="font-headline-md text-xl sm:text-2xl font-semibold text-zinc-950 mb-3 sm:mb-4 leading-snug">
-                    Enterprise Hydrogen Migration
-                  </h3>
-                  <p className="font-body-sm text-xs sm:text-sm text-zinc-600 font-light leading-relaxed mb-6">
-                    Migrated a high-volume catalog from legacy Liquid to Shopify Hydrogen on Oxygen (React), cutting page load times to under 1.2s.
-                  </p>
-                </div>
-
-                <div className="pt-6 border-t border-zinc-100 flex items-center justify-between">
-                  <div className="text-[11px] sm:text-xs font-label-caps text-zinc-950 font-semibold bg-zinc-100 px-3 py-1 rounded-full border border-zinc-200">
-                    48% Conversion Lift
-                  </div>
-                  <span className="text-[11px] sm:text-xs font-label-caps text-zinc-400">&lt;1.2s LCP Speed</span>
-                </div>
-              </SpotlightCard>
-
+                </SpotlightCard>
+              ))}
             </div>
 
           </div>
@@ -444,10 +451,10 @@ const HomePage = () => {
                   GET IN TOUCH
                 </span>
                 <h2 className="font-display-lg text-2xl sm:text-4xl lg:text-5xl font-light text-white tracking-tight mb-4 sm:mb-6">
-                  Have a project in mind?
+                  Have an operational bottleneck or project in mind?
                 </h2>
                 <p className="text-zinc-400 font-body-sm text-sm sm:text-base font-light leading-relaxed mb-6 sm:mb-8">
-                  Whether you need a faster Shopify store, a scalable AWS backend, or custom automation to remove repetitive work, let's talk through the requirements.
+                  Whether you need a faster Shopify store, a store-tailored custom app, a scalable AWS backend, or workflow automation to eliminate manual work, let's talk through the requirements.
                 </p>
 
                 <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
@@ -455,7 +462,7 @@ const HomePage = () => {
                     onClick={() => handleOpenContact()}
                     className="font-label-caps text-xs text-zinc-950 bg-white hover:bg-zinc-100 px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl sm:rounded-full transition-all inline-flex items-center justify-center gap-2 font-medium shadow-sm active:scale-[0.98]"
                   >
-                    <MessageSquare size={14} /> Send a Message
+                    <MessageSquare size={14} /> Start a Project
                   </button>
                   <a
                     href="mailto:xyleze@gmail.com"

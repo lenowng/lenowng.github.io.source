@@ -21,9 +21,9 @@ const ReadsSection: React.FC = () => {
     {
       id: 'log_003',
       date: '2025-12-20',
-      title: 'Migrating to Hydrogen: A Survival Guide',
-      desc: 'Lessons learned moving a $10M GMV store to headless.',
-      tags: ['Hydrogen', 'React']
+      title: 'Building Store-Tailored Shopify Apps',
+      desc: 'Extending Shopify Admin and POS workflows with custom embedded apps and webhooks.',
+      tags: ['Shopify', 'Node.js']
     }
   ];
 

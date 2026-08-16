@@ -16,68 +16,68 @@ interface ServiceScenario {
 
 const scenarios: ServiceScenario[] = [
   {
-    id: 'shopify-speed',
-    title: 'Shopify Speed & Headless Migration',
-    category: 'E-Commerce',
-    problem: 'Slow page load speeds, bloated theme code, and checkout drop-offs hurting store conversion rates.',
-    solution: 'Rebuilding critical storefront paths with Shopify Hydrogen (React) or modular Liquid, stripping out unneeded apps and optimizing assets.',
-    timeline: '2 to 4 Weeks',
-    impact: 'Faster load times (<1.2s LCP) and measurable conversion improvements',
-    deliverables: [
-      'Modular Liquid or Hydrogen React storefront',
-      'Subscription and cart bundle logic',
-      'App script audit and speed optimization',
-      'Core Web Vitals tuning (90+ mobile score)'
-    ],
-    stack: ['Shopify Liquid', 'Hydrogen', 'React', 'Tailwind CSS', 'Storefront API']
-  },
-  {
-    id: 'automation-ops',
-    title: 'Workflow & Order Automation',
-    category: 'Automation',
-    problem: 'Support and fulfillment teams spending hours each day manually editing orders, updating tags, and copying data between tools.',
-    solution: 'Building serverless background pipelines and embedded admin tools that automatically process webhooks, update tags, and sync records.',
+    id: 'sprint-automation',
+    title: 'Sprint Automation',
+    category: 'Operations',
+    problem: 'Support and operations teams spending hours each day manually editing orders, transcribing tracking numbers, and copying data between systems.',
+    solution: 'Deploying serverless background pipelines, Google Apps Script data connectors, automated tagging workflows, and custom Jira ScriptRunner scripts that process events instantly.',
     timeline: '1 to 2 Weeks',
-    impact: 'Eliminates manual data entry and prevents order handling delays',
+    impact: 'Eliminates repetitive data entry and prevents order fulfillment delays',
     deliverables: [
-      'Embedded Shopify Admin tool',
-      'Automated order tagging and status pipeline',
-      'Webhook processing with error retries',
-      'Activity logs and Slack/email notifications'
+      'Automated order tagging & status workflow',
+      'Google Apps Script automated Sheets pipeline',
+      'Idempotent webhook pipeline with retry handling',
+      'Jira ScriptRunner / Groovy workflow automation'
     ],
-    stack: ['AWS Lambda', 'API Gateway', 'TypeScript', 'Shopify Admin API']
+    stack: ['Google Apps Script', 'AWS Lambda', 'Node.js', 'Webhooks', 'Groovy']
   },
   {
-    id: 'aws-infrastructure',
-    title: 'AWS Serverless Architecture',
-    category: 'Cloud Infrastructure',
-    problem: 'Traditional servers struggling with traffic spikes during product drops or incurring high idle monthly costs.',
-    solution: 'Migrating workloads to AWS Lambda, API Gateway, DynamoDB, and SQS with infrastructure as code for fast, automatic scaling.',
+    id: 'custom-store-apps',
+    title: 'Custom Store Apps & POS',
+    category: 'Shopify Apps',
+    problem: 'Off-the-shelf Shopify apps lack store-specific business rules, charge high recurring fees, and clutter the admin interface.',
+    solution: 'Building store-tailored embedded Shopify Admin apps and POS UI extensions that integrate directly with your exact operational rules.',
     timeline: '2 to 3 Weeks',
-    impact: 'Zero-maintenance scaling with lower monthly infrastructure bills',
+    impact: 'Seamless admin workflows without recurring third-party SaaS fees',
     deliverables: [
-      'Serverless Framework / CDK configuration',
-      'Single-table DynamoDB data model',
-      'Asynchronous SQS queue handling',
-      'CloudWatch logging and performance alarms'
+      'Embedded Shopify Admin application (React / Polaris)',
+      'Custom POS UI Extension for retail checkout',
+      'Dynamic metafield and order tag automation',
+      'Secure backend API with Shopify GraphQL integration'
     ],
-    stack: ['AWS Lambda', 'DynamoDB', 'SQS', 'Serverless Framework']
+    stack: ['Shopify Admin API', 'POS UI Extensions', 'React', 'Node.js', 'TypeScript']
   },
   {
-    id: 'custom-web-app',
-    title: 'Custom Web Applications',
+    id: 'storefront-overhaul',
+    title: 'Storefront Overhaul & Speed',
+    category: 'E-Commerce',
+    problem: 'Slow page load times, bloated theme code, and checkout friction hurting mobile store conversion rates.',
+    solution: 'Rebuilding and tuning Liquid 2.0 themes with modular section architecture, removing unused app scripts, and optimizing assets.',
+    timeline: '2 to 4 Weeks',
+    impact: 'Sub-second load times (<1.2s LCP) and higher checkout conversions',
+    deliverables: [
+      'Modular Liquid 2.0 theme sections & layout refactor',
+      'Subscription (Recharge) & custom cart drawer logic',
+      'Third-party app script audit and asset optimization',
+      'Core Web Vitals tuning (90+ mobile Lighthouse score)'
+    ],
+    stack: ['Shopify Liquid', 'Tailwind CSS', 'Alpine.js / JS', 'Recharge API']
+  },
+  {
+    id: 'fullstack-app',
+    title: 'Full-Stack Web Applications',
     category: 'Web Development',
-    problem: 'Generic off-the-shelf software does not fit internal operations, forcing teams to rely on messy spreadsheets.',
-    solution: 'Developing focused internal web apps and client dashboards with clean interfaces, secure auth, and fast API backends.',
+    problem: 'Internal teams relying on complex spreadsheets with zero access control, audit history, or automated data validation.',
+    solution: 'Developing custom internal tools, merchant consoles, and lightweight web apps with secure auth, responsive UI, and auto-scaling backends.',
     timeline: '3 to 6 Weeks',
-    impact: 'Tailored tooling built for your exact operational workflow',
+    impact: 'Tailored operational tooling built for your exact workflow',
     deliverables: [
       'Full-stack React / Next.js web application',
-      'Role-based authentication and user management',
-      'Clean admin dashboard with data tables and export',
-      'Documented REST or GraphQL API endpoints'
+      'Role-based authentication and user access control',
+      'Clean data dashboard with tables, filtering, and export',
+      'Serverless AWS backend (Lambda, API Gateway, DynamoDB)'
     ],
-    stack: ['React', 'Next.js', 'Hono', 'TypeScript', 'Tailwind CSS', 'PostgreSQL / DynamoDB']
+    stack: ['React', 'Next.js', 'Hono', 'TypeScript', 'AWS Lambda', 'DynamoDB']
   }
 ]
 
@@ -95,19 +95,19 @@ const ServiceScopeCalculator = ({ onSelectScope }: ServiceScopeCalculatorProps) 
       {/* Header */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-3 sm:gap-4 mb-6 sm:mb-10 pb-5 sm:pb-6 border-b border-zinc-100">
         <div>
-          <span className="font-label-caps text-[10px] sm:text-[11px] text-zinc-400 uppercase tracking-widest block mb-1">
-            SCOPE BLUEPRINTS
+          <span className="font-label-caps text-[10px] sm:text-[11px] text-zinc-400 uppercase tracking-widest block mb-1 font-semibold">
+            ENGAGEMENT BLUEPRINTS
           </span>
           <h3 className="font-headline-md text-xl sm:text-2xl md:text-3xl text-zinc-950 font-normal tracking-tight">
-            Explore common project scopes
+            Explore standard project scopes
           </h3>
         </div>
         <div className="font-label-caps text-[9px] sm:text-[10px] text-zinc-600 border border-zinc-200 px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full bg-zinc-50 font-medium whitespace-nowrap">
-          SELECT A SCOPE TO VIEW DETAILS
+          SELECT A TIER TO VIEW DETAILS
         </div>
       </div>
 
-      {/* 4 Scenario Selector Cards */}
+      {/* 4 Tier Selector Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6 sm:mb-10">
         {scenarios.map((s) => {
           const isSelected = s.id === activeId
@@ -195,7 +195,7 @@ const ServiceScopeCalculator = ({ onSelectScope }: ServiceScopeCalculatorProps) 
                 {/* Timeline & Outcome */}
                 <div className="grid grid-cols-2 gap-3 sm:gap-4 pb-5 sm:pb-6 border-b border-zinc-200">
                   <div>
-                    <div className="font-label-caps text-[9px] sm:text-[10px] text-zinc-400 uppercase tracking-wider mb-1 flex items-center gap-1.5">
+                    <div className="font-label-caps text-[9px] sm:text-[10px] text-zinc-400 uppercase tracking-wider mb-1 flex items-center gap-1.5 font-semibold">
                       <Clock size={12} className="text-zinc-500 shrink-0" /> TIMELINE
                     </div>
                     <div className="font-headline-md text-xl sm:text-2xl text-zinc-950 font-medium">
@@ -204,7 +204,7 @@ const ServiceScopeCalculator = ({ onSelectScope }: ServiceScopeCalculatorProps) 
                   </div>
 
                   <div>
-                    <div className="font-label-caps text-[9px] sm:text-[10px] text-zinc-400 uppercase tracking-wider mb-1 flex items-center gap-1.5">
+                    <div className="font-label-caps text-[9px] sm:text-[10px] text-zinc-400 uppercase tracking-wider mb-1 flex items-center gap-1.5 font-semibold">
                       <ShieldCheck size={12} className="text-zinc-500 shrink-0" /> OUTCOME
                     </div>
                     <div className="font-body-sm text-xs sm:text-sm text-zinc-950 font-semibold leading-tight">

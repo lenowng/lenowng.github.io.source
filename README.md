@@ -3,7 +3,7 @@
 Modern digital engineering portfolio and service hub built for **Leon Wong / Nightr.dev**.
 
 ## 🚀 Services Showcase
-- **Shopify & E-Commerce Engineering:** Liquid themes, Hydrogen headless React storefronts, Admin GraphQL apps, POS extensions.
+- **Shopify Themes & Custom Store Apps:** Liquid 2.0 theme development, Admin GraphQL apps, POS UI extensions, speed optimization.
 - **AWS Cloud Infrastructure:** Serverless Lambda, API Gateway, DynamoDB single-table design, SQS queues.
 - **Workflow Automation:** Custom order rescheduling, webhook data pipelines, JIRA/Groovy automation.
 - **Full-Stack Web Engineering:** React, Next.js, Hono edge APIs, TypeScript, Tailwind CSS.
