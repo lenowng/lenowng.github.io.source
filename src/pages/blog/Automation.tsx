@@ -26,7 +26,7 @@ const AutomationPost: React.FC = () => {
       <p>An SES rule catches emails from specific supplier domains and dumps the raw MIME content into an S3 bucket.</p>
 
       <h3>Step 2: Parsing (Node.js Lambda)</h3>
-      <p>An S3 event triggers a Lambda function. This function uses regex to extract tracking numbers, order IDs, and carriers from the email body (even from PDFs attachments using <code>pdf-parse</code>).</p>
+      <p>An S3 event triggers a Lambda function. This function uses regex to extract tracking numbers, order IDs, and carriers from the email body (even from PDF attachments using <code>pdf-parse</code>).</p>
 
       <pre><code>{`// Parsing logic simplified
 const trackingRegex = /Tracking Number: ([A-Z0-9]+)/;
@@ -37,7 +37,7 @@ if (match) {
 }`}</code></pre>
 
       <h3>Step 3: Execution</h3>
-      <p>The extracted data is pushed directly to the ERP's REST API. Slack notifications are sent for both success and failure (e.g., unmatched order ID).</p>
+      <p>The extracted data is pushed directly to the ERP's REST API. Slack notifications are sent for both success and failure (such as unmatched order IDs).</p>
 
       <h2>Results</h2>
       <ul>
@@ -46,7 +46,7 @@ if (match) {
         <li><strong>Cost:</strong> Less than $5/month on AWS.</li>
       </ul>
 
-      <p>Automation isn't just about speed—it's about removing the mundane so humans can focus on value.</p>
+      <p>Automation is not just about speed: it is about removing repetitive work so teams can focus on real value.</p>
     </BlogPostLayout>
   );
 };

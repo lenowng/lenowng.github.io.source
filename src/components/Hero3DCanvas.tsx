@@ -27,7 +27,7 @@ const Hero3DCanvas = () => {
     }
     window.addEventListener('resize', handleResize)
 
-    // Smooth cursor physics (slow, weighted lag for calm fluidity)
+    // Smooth cursor & touch physics
     let targetMouseX = cssWidth * 0.5
     let targetMouseY = cssHeight * 0.5
     let mouseX = cssWidth * 0.5
@@ -40,7 +40,19 @@ const Hero3DCanvas = () => {
       targetMouseX = e.clientX - rect.left
       targetMouseY = e.clientY - rect.top
     }
+
+    const handleTouchMove = (e: TouchEvent) => {
+      if (e.touches.length > 0) {
+        const touch = e.touches[0]
+        const rect = canvas.getBoundingClientRect()
+        targetMouseX = touch.clientX - rect.left
+        targetMouseY = touch.clientY - rect.top
+      }
+    }
+
     window.addEventListener('mousemove', handleMouseMove)
+    window.addEventListener('touchmove', handleTouchMove, { passive: true })
+    window.addEventListener('touchstart', handleTouchMove, { passive: true })
 
     // Scroll depth tracking with smooth damping
     let scrollY = window.scrollY
@@ -53,14 +65,13 @@ const Hero3DCanvas = () => {
     let time = 0
 
     const render = () => {
-      // Slow, hypnotic, serene time step
       time += 0.0032
       ctx.clearRect(0, 0, width, height)
 
       ctx.save()
       ctx.scale(dpr, dpr)
 
-      // Spring physics interpolation for cursor movement
+      // Spring physics interpolation
       const prevMouseX = mouseX
       const prevMouseY = mouseY
       mouseX += (targetMouseX - mouseX) * 0.035
@@ -72,17 +83,24 @@ const Hero3DCanvas = () => {
       const speedMagnitude = Math.min(Math.sqrt(velocityX * velocityX + velocityY * velocityY), 12)
       const scrollOffset = scrollY * 0.16
 
-      // Zoomed-in expansive 3D kinetic fluid motion lines spanning full vertical height
-      const numLines = 26
-      const numSegments = 120
+      // Responsive parameter adaptation: prevents squishing on narrow mobile screens
+      const isMobile = cssWidth < 768
+      const numLines = isMobile ? 16 : 26
+      const numSegments = isMobile ? 90 : 120
       const centerX = cssWidth * 0.5
       const centerY = cssHeight * 0.50 - scrollOffset * 0.28
-      const spanWidth = cssWidth * 1.5
+      
+      // On mobile, expand span wider and use lower angular frequency so waves are long, sweeping & breathable
+      const spanWidth = isMobile ? cssWidth * 2.2 : cssWidth * 1.5
+      const waveFreq = isMobile ? 1.35 : 2.6
+      const radiusYBase = isMobile ? cssHeight * 0.22 : cssHeight * 0.36
+      const radiusYMod = isMobile ? cssHeight * 0.05 : cssHeight * 0.08
+      const verticalSpreadStep = isMobile ? 18 : cssHeight * 0.026
 
       for (let r = 0; r < numLines; r++) {
         const linePhase = (r / numLines) * Math.PI * 2
-        const depthOffset = (r - numLines / 2) * 32
-        const verticalSpread = (r - numLines * 0.5) * (cssHeight * 0.026)
+        const depthOffset = (r - numLines / 2) * (isMobile ? 22 : 32)
+        const verticalSpread = (r - numLines * 0.5) * verticalSpreadStep
 
         ctx.beginPath()
         const ribbonPoints: { x: number; y: number }[] = []
@@ -90,31 +108,31 @@ const Hero3DCanvas = () => {
         for (let i = 0; i <= numSegments; i++) {
           const t = i / numSegments
 
-          // Harmonic 3D Parametric Wave Equations with enlarged vertical amplitude
-          const theta = t * Math.PI * 2.6 + time * 0.28 + linePhase * 0.75
-          const phi = t * Math.PI * 1.6 + time * 0.20 + (scrollY * 0.0008)
+          // Harmonic 3D Parametric Wave Equations
+          const theta = t * Math.PI * waveFreq + time * 0.28 + linePhase * 0.75
+          const phi = t * Math.PI * (isMobile ? 1.0 : 1.6) + time * 0.20 + (scrollY * 0.0008)
 
-          const radiusX = 120 + Math.sin(time * 0.35 + t * 2.5 + linePhase) * 55
-          // Zoomed-in vertical amplitude covering high and low sections of the hero
-          const radiusY = cssHeight * 0.36 + Math.cos(time * 0.25 + t * 2.2 + linePhase * 0.5) * (cssHeight * 0.08)
-          const radiusZ = 210 + Math.sin(theta) * 65
+          const radiusX = (isMobile ? 70 : 120) + Math.sin(time * 0.35 + t * 2.5 + linePhase) * (isMobile ? 30 : 55)
+          const radiusY = radiusYBase + Math.cos(time * 0.25 + t * 2.2 + linePhase * 0.5) * radiusYMod
+          const radiusZ = (isMobile ? 160 : 210) + Math.sin(theta) * (isMobile ? 45 : 65)
 
-          // 3D coordinates spanning generously across width and height
+          // 3D coordinates
           let x3d = (t - 0.5) * spanWidth + Math.cos(theta) * radiusX
-          let y3d = Math.sin(theta * 1.15 + phi) * radiusY + Math.sin(t * Math.PI * 2) * (cssHeight * 0.10) + verticalSpread
+          let y3d = Math.sin(theta * 1.15 + phi) * radiusY + Math.sin(t * Math.PI * 2) * (cssHeight * (isMobile ? 0.06 : 0.10)) + verticalSpread
           const z3d = Math.sin(theta) * radiusZ + depthOffset
 
-          // Subtle, calm fluid reaction to cursor proximity
+          // Subtle, calm fluid reaction to cursor/touch proximity
           const dx = mouseX - (centerX + x3d * 0.65)
           const dy = mouseY - (centerY + y3d * 0.65)
           const distToCursor = Math.sqrt(dx * dx + dy * dy)
-          const cursorInfluence = Math.max(0, 1 - distToCursor / 460) * (28 + speedMagnitude * 1.1)
+          const interactionRadius = isMobile ? 320 : 460
+          const cursorInfluence = Math.max(0, 1 - distToCursor / interactionRadius) * (26 + speedMagnitude * 1.1)
 
           x3d += (dx / (distToCursor + 1)) * cursorInfluence * Math.sin(t * Math.PI)
           y3d += (dy / (distToCursor + 1)) * cursorInfluence * Math.sin(t * Math.PI)
 
-          // 3D Perspective Projection (zoomed-in perspective)
-          const fov = 750
+          // 3D Perspective Projection
+          const fov = isMobile ? 600 : 750
           const perspective = fov / (fov + z3d + 220)
 
           const projX = centerX + x3d * perspective
@@ -137,11 +155,11 @@ const Hero3DCanvas = () => {
           }
         }
 
-        // Delicate hairline stroke with subtle monochromatic opacity gradient
+        // Delicate hairline stroke with subtle opacity gradient
         const normalizedIdx = r / numLines
         const alphaCurve = Math.sin(normalizedIdx * Math.PI)
-        const alpha = Math.max(0.02, 0.03 + alphaCurve * 0.075)
-        const baseThickness = 0.7 + (r % 5 === 0 ? 0.35 : 0)
+        const alpha = Math.max(0.02, 0.03 + alphaCurve * (isMobile ? 0.065 : 0.075))
+        const baseThickness = 0.7 + (r % (isMobile ? 3 : 5) === 0 ? 0.35 : 0)
 
         ctx.strokeStyle = `rgba(9, 9, 11, ${alpha})`
         ctx.lineWidth = baseThickness
@@ -158,6 +176,8 @@ const Hero3DCanvas = () => {
     return () => {
       window.removeEventListener('resize', handleResize)
       window.removeEventListener('mousemove', handleMouseMove)
+      window.removeEventListener('touchmove', handleTouchMove)
+      window.removeEventListener('touchstart', handleTouchMove)
       window.removeEventListener('scroll', handleScroll)
       cancelAnimationFrame(animationFrameId)
     }
